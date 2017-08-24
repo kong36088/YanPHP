@@ -1,0 +1,20 @@
+{
+  "name": "weilongjiang/yanphp",
+  "require": {
+    "php": ">=7",
+    "phpunit/phpunit": "5.* || 6.*",
+    "monolog/monolog": "1.*"
+  },
+  "authors": [
+    {
+      "name": "weilong jiang",
+      "email": "william@jwlchina.cn"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "System",
+      "Application"
+    ]
+  }
+}
