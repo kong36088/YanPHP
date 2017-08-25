@@ -124,11 +124,11 @@ if (!function_exists('exceptionHandler')) {
     }
 }
 if (!function_exists('throwError')) {
-    function throwError($message = '', $status_code = 500, $isExit = true, $template = 'error_general')
+    function throwError($message = '', $statusCode = 500, $isExit = true)
     {
-        Long\Library\Logger\Log::error($message);
+        Yan\Core\Log::error($message);
 
-        Long\Core\ExceptionHandle::showError($message, $status_code, $template);
+        Long\Core\ExceptionHandle::showError($message, $statusCode);
 
         if ($isExit) {
             exit(1);

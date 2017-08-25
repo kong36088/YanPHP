@@ -1,12 +1,11 @@
 <?php
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
 
 namespace Yan\Core;
 
-use Yan\Core\Log;
 
 class Config
 {
@@ -33,7 +32,11 @@ class Config
     }
 
 
-    public static function get($key = '')
+    /**
+     * @param string $key
+     * @return array|bool|string
+     */
+    public static function get(string $key = '')
     {
         if (empty($key)) return self::$_configItems;
         return isset(self::$_configItems[$key]) ? self::$_configItems[$key] : false;
@@ -45,12 +48,12 @@ class Config
      *
      * @return array
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::$_configItems;
     }
 
-    public static function set($key = '', $value = '')
+    public static function set(string $key = '', string $value = ''): void
     {
         if (empty($key)) return;
         self::$_configItems[$key] = $value;
@@ -61,7 +64,7 @@ class Config
      * @param string $file
      * @return bool
      */
-    public static function loadConfig($file = '')
+    public static function loadConfig(string $file = ''): bool
     {
         $file = str_replace('.php', '', $file) . '.php';
 
