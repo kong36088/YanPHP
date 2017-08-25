@@ -1,13 +1,11 @@
 <?php
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
 
-namespace Long\Core;
+namespace Yan\Core;
 
-use Long\Database\DBDriver;
-use Long\Library\Logger\Log;
 
 class Model
 {

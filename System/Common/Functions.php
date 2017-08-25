@@ -202,37 +202,15 @@ if (!function_exists('input')) {
         $keyArr[1] = $keyArr ?: '';
         switch (strtoupper($keyArr[0])) {
             case 'GET':
-                return Long\Library\Input::get($keyArr[1]);
+                return Yan\Core\Input::get($keyArr[1]);
             case 'POST':
-                return Long\Library\Input::post($keyArr[1]);
+                return Yan\Core\Input::post($keyArr[1]);
             case 'DELETE':
-                return Long\Library\Input::delete($keyArr[1]);
+                return Yan\Core\Input::delete($keyArr[1]);
             case 'PUT':
-                return Long\Library\Input::put($keyArr[1]);
+                return Yan\Core\Input::put($keyArr[1]);
             default:
-                return Long\Library\Input::input($keyArr[1]);
-        }
-    }
-}
-
-if (!function_exists('output')) {
-    /**
-     * @param string|array $data
-     * @param string $type output type
-     */
-    function output($data, $type = 'RAW')
-    {
-        $type = strtoupper($type);
-
-        switch ($type) {
-            case 'JSON':
-                Long\Library\Output::json($data);
-                break;
-            case 'HTML':
-                Long\Library\Output::html($data);
-                break;
-            default:
-                Long\Library\Output::raw($data);
+                return Yan\Core\Input::input($keyArr[1]);
         }
     }
 }

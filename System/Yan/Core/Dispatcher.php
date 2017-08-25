@@ -1,12 +1,10 @@
 <?php
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
 
-namespace Long\Core;
-
-use Long\Library\Logger\Log;
+namespace Yan\Core;
 
 /**
  * Class Dispatcher
@@ -32,7 +30,7 @@ class Dispatcher
 		if (isCli()) {
             $instance->_commandLine();
 		}
-		Log::debug('Router init, request URI ' . $_SERVER['REQUEST_URI']);
+		Log::info("Router init: client_ip={$_SERVER['REMOTE_ADDR']}, request URI {$_SERVER['REQUEST_URI']}");
 
 		//init vars
         $instance->_defaultController = Config::get('default_controller');
