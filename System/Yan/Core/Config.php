@@ -72,7 +72,7 @@ class Config
             throwError('Wrong file name', 503, true);
         }
 
-        $filePath = APP_PATH . DIRECTORY_SEPARATOR . 'config/' . $file;
+        $filePath = BASE_PATH . DIRECTORY_SEPARATOR . 'config/' . $file;
 
         if (!file_exists($filePath)) {
             throwError('File ' . $file . 'doesn\'t exists', 503, true);
@@ -91,7 +91,7 @@ class Config
             self::$_isLoaded[$file] = true;
             self::$_configItems = array_merge(self::$_configItems, $config);
         }
-        Log::debug('Load config file \'' . $file . '\'');
+        Log::info('Load config file \'' . $file . '\'');
         return true;
     }
 

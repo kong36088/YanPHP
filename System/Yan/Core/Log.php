@@ -32,7 +32,7 @@ class Log
      */
     protected static $logger = null;
 
-    protected static $logPath = APP_PATH . "/logs";
+    protected static $logPath = BASE_PATH . "/logs";
 
     protected static $logMaxFile = 0;
 
@@ -40,24 +40,16 @@ class Log
 
     public static function getInstance(): Logger
     {
-        self::$logPath = Config::get('log_path');
-        self::$logMaxFile = Config::get('log_max_file');
-        self::$logLevel = Config::get('log_level');
         if (empty(static::$logger)) {
+            self::$logPath = Config::get('log_path');
+            self::$logMaxFile = Config::get('log_max_file');
+            self::$logLevel = Config::get('log_level');
+
             static::$logger = new Logger('YanLogger');
-            $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile,self::$logLevel);
+            $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile, self::$logLevel);
             static::$logger->pushHandler($handler);
         }
         return static::$logger;
-    }
-
-    public function initialize()
-    {
-        if (empty(static::$logger)) {
-            static::$logger = new Logger('YanLogger');
-            $handler = new StreamHandler(APP_PATH . "/logs");
-            static::$logger->pushHandler($handler);
-        }
     }
 
     /**
@@ -76,7 +68,7 @@ class Log
     }
 
     /**
-     * @param callable $method
+     * @param string $method
      * @param array $args
      * @return bool
      */

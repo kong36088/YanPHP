@@ -40,7 +40,7 @@ $config['log_level'] = 'DEBUG';
 /**
  * The log path
  */
-$config['log_path'] = APP_PATH . '/cgi/logs/server.log';
+$config['log_path'] = BASE_PATH . '/logs/server.log';
 /**
  *  Max file num, default 0(not limited)
  */
