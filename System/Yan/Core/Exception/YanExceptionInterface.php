@@ -6,12 +6,9 @@
  * Time: 下午12:25
  */
 
-namespace Long\Core\Exception;
+namespace Yan\Core\Exception;
 
 
 interface YanExceptionInterface
 {
-    public function getPropertyPath(): string;
-
-    public function getValue(): mixed;
 }

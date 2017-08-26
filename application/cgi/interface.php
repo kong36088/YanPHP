@@ -13,7 +13,6 @@ if ($debug) {
     error_reporting(-1);                    //打印出所有的 错误信息
 }
 
-$applicationPath = 'Application';
 
 $systemPath = '../../System';
 

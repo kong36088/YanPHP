@@ -4,20 +4,30 @@
  * Date: 2017/8/23
  * Time: 17:54
  */
+require_once "Yan/Common/Functions.php";
 
 Yan\Core\Config::initialize();
 
-$logger = Yan\Core\Log::getInstance();
+Yan\Core\Log::initialize();
+
+
 $test = new Yan\Core\Log();
-$test->debug('debug log');
+$test->debug('debug log', ['a', 'b' => BASE_PATH]);
 $test->info('info log');
+try {
+    Yan\Core\Log::notthing(123);
+} catch (Exception $e) {
+    print_r($e->getMessage());
+    print_r($e->getCode());
+}
 
-$routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(),new FastRoute\DataGenerator\GroupCountBased());
+$routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
 
-$routeCollector->addRoute('GET','/','test_handler');
-$routeCollector->addRoute('GET','/interface.php','test_handler');
+$routeCollector->addRoute('GET', '/', 'test_handler');
+$routeCollector->addRoute('GET', '/interface.php', 'test_handler');
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){},['routeCollector'=>$routeCollector]);
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+}, ['routeCollector' => $routeCollector]);
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
@@ -27,7 +37,7 @@ if (false !== $pos = strpos($uri, '?')) {
 }
 $uri = rawurldecode($uri);
 
-$routeInfo = $dispatcher->dispatch($httpMethod,$uri);
+$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:

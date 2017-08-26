@@ -6,7 +6,6 @@
 
 namespace Yan\Core;
 
-
 class Model
 {
     /**
@@ -21,13 +20,13 @@ class Model
 
     public function __construct()
     {
-        Log::debug('Init Model' . __CLASS__);
+        Log::info('Init Model' . __CLASS__);
 
         $dbDriver = 'Long\\Database\\' . ucfirst(Config::get('db_driver')) . 'Driver';
         $dbDriverFile = SYS_PATH . DIRECTORY_SEPARATOR . 'Long/Database/' . ucfirst(Config::get('db_driver')) . 'Driver.php';
 
         if (!file_exists($dbDriverFile)) {
-            throwError('Db driver type error', 500, true);
+            throwErr('Db driver type error', 500, Exception\RuntimeException::class);
         }
 
         //singleton

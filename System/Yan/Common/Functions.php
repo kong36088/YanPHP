@@ -4,7 +4,8 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  * Longphp
  * Author: William Jiang
  */
-
+use Yan\Core\ReturnCode;
+use Yan\Core\Exception;
 
 if (!function_exists('isCli')) {
     /**
@@ -74,7 +75,7 @@ if (!function_exists('setHeader')) {
             505 => 'HTTP Version Not Supported'
         );
         if (!isset($status[$code])) {
-            throwError('Invalid error code', 500);
+            throwErr('Invalid error code', 500, Exception\InvalidArgumentException::class);
         }
 
         if (strpos(PHP_SAPI, 'cgi') === 0) {
@@ -115,24 +116,20 @@ if (!function_exists('exceptionHandler')) {
      */
     function exceptionHandler($exception)
     {
-        Long\Core\ExceptionHandle::logError('error', $exception->getMessage(), $exception->getFile(), $exception->getLine());
-
-        if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors'))) {
-            Long\Core\ExceptionHandle::showException($exception);
-        }
-        exit(1);
     }
 }
-if (!function_exists('throwError')) {
-    function throwError($message = '', $statusCode = 500, $isExit = true)
+if (!function_exists('throwErr')) {
+    function throwErr(string $message = '', int $code, $exceptionClass = '\\Exception')
     {
-        Yan\Core\Log::error($message);
-
-        Long\Core\ExceptionHandle::showError($message, $statusCode);
-
-        if ($isExit) {
-            exit(1);
-        }
+        /** @var Exception $exception */
+        $exception = new $exceptionClass($message, $code);
+        \Yan\Core\Log::error($message, [
+            'message' => $message,
+            'code' => $exception->getCode(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine()
+        ]);
+        throw $exception;
     }
 }
 
@@ -141,11 +138,11 @@ if (!function_exists('M')) {
     {
         $modelName = ucfirst($name) . 'Model';
         $modelFile = ucfirst($name) . 'Model.php';
-        $filePath = APP_PATH . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . $modelFile;
+        $filePath = BASE_PATH . '/Model/' . $modelFile;
 
         //判断文件是否存在
         if (!file_exists($filePath)) {
-            throwError('Model ' . $name . 'does not exist');
+            throwErr("Model {$name} does not exist", ReturnCode::SYSTEM_ERROR, Exception\RuntimeException ::class);
         }
         $model = 'Model\\' . $modelName;
         $M = new $model();

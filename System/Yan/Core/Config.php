@@ -22,11 +22,11 @@ class Config
      */
     public static function initialize()
     {
-        self::loadConfig('autoload');
+        self::loadConfig('autoload', true);
         $autoload = self::get('autoload_config');
         if (is_array($autoload)) {
             foreach ($autoload as $k => $configFile) {
-                self::loadConfig($configFile);
+                self::loadConfig($configFile, true);
             }
         }
     }
@@ -62,21 +62,21 @@ class Config
     /**
      * to load config files, mark put in $isLoaded
      * @param string $file
+     * @param bool $isInit Whether is the initial call
      * @return bool
      */
-    public static function loadConfig(string $file = ''): bool
+    public static function loadConfig(string $file = '', bool $isInit = false): bool
     {
         $file = str_replace('.php', '', $file) . '.php';
 
         if (empty($file)) {
-            throwError('Wrong file name', 503, true);
+            throwErr('Wrong file name', ReturnCode::SYSTEM_ERROR, Exception\RuntimeException::class);
         }
 
-        $filePath = BASE_PATH . DIRECTORY_SEPARATOR . 'config/' . $file;
+        $filePath = BASE_PATH . '/config/' . $file;
 
         if (!file_exists($filePath)) {
-            throwError('File ' . $file . 'doesn\'t exists', 503, true);
-            exit(1);
+            throwErr("File {$file} doesn't exists", ReturnCode::SYSTEM_ERROR, Exception\RuntimeException::class);
         } else {
             if (isset(self::$_isLoaded[$file])) {
                 return true;
@@ -91,7 +91,9 @@ class Config
             self::$_isLoaded[$file] = true;
             self::$_configItems = array_merge(self::$_configItems, $config);
         }
-        Log::info('Load config file \'' . $file . '\'');
+        if (!$isInit) {
+            Log::info("Load config file '{$file}'");
+        }
         return true;
     }
 

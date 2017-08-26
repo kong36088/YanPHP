@@ -19,7 +19,7 @@ $config['base_url'] = 'vm/';
 /**
  * location of your application
  */
-$config['application_path'] = 'Application';
+$config['application_path'] = 'application';
 
 
 /**
@@ -40,7 +40,7 @@ $config['log_level'] = 'DEBUG';
 /**
  * The log path
  */
-$config['log_path'] = BASE_PATH . '/logs/server.log';
+$config['log_path'] = APP_PATH . '/server/logs/server.log';
 /**
  *  Max file num, default 0(not limited)
  */

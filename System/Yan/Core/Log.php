@@ -9,7 +9,6 @@ namespace Yan\Core;
 
 
 use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 /**
@@ -23,7 +22,7 @@ use Monolog\Logger;
  * @method static bool notice($message, array $context = array())
  * @method static bool info($message, array $context = array())
  * @method static bool debug($message, array $context = array())
- * @method static bool log($message, array $context = array())
+ * @method static bool log($level, $message, array $context = array())
  */
 class Log
 {
@@ -32,24 +31,30 @@ class Log
      */
     protected static $logger = null;
 
-    protected static $logPath = BASE_PATH . "/logs";
+    protected static $logPath = BASE_PATH . "/logs/server.log";
 
     protected static $logMaxFile = 0;
 
-    protected static $logLevel = 'DEBUG';
+    protected static $logLevel = 'INFO';
 
     public static function getInstance(): Logger
     {
-        if (empty(static::$logger)) {
-            self::$logPath = Config::get('log_path');
-            self::$logMaxFile = Config::get('log_max_file');
-            self::$logLevel = Config::get('log_level');
+        //TODO formater
+        if (empty(self::$logger)) {
+            self::$logPath = Config::get('log_path') ?: self::$logPath;
+            self::$logMaxFile = Config::get('log_max_file') ?: self::$logMaxFile;
+            self::$logLevel = Config::get('log_level') ?: self::$logPath;
 
             static::$logger = new Logger('YanLogger');
             $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile, self::$logLevel);
-            static::$logger->pushHandler($handler);
+            self::$logger->pushHandler($handler);
         }
-        return static::$logger;
+        return self::$logger;
+    }
+
+    public static function initialize(): Logger
+    {
+        return self::getInstance();
     }
 
     /**
@@ -59,10 +64,10 @@ class Log
      */
     public static function __callStatic(string $method, array $args): bool
     {
-        if (method_exists(static::$logger, $method)) {
+        if (method_exists(Logger::class, $method)) {
             return call_user_func_array([static::$logger, $method], $args);
         } else {
-            //TODO 抛出异常
+            throwErr("log method '{$method}' does not exist", ReturnCode::METHOD_NOT_EXIST, Exception\BadMethodCallException::class);
             return false;
         }
     }
@@ -74,10 +79,10 @@ class Log
      */
     public function __call(string $method, array $args): bool
     {
-        if (method_exists(static::$logger, $method)) {
+        if (method_exists(Logger::class, $method)) {
             return call_user_func_array([static::$logger, $method], $args);
         } else {
-            //TODO 抛出异常
+            throwErr("log method '{$method}' does not exist", ReturnCode::METHOD_NOT_EXIST, Exception\BadMethodCallException::class);
             return false;
         }
     }
