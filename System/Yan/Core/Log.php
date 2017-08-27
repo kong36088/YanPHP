@@ -8,6 +8,7 @@
 namespace Yan\Core;
 
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
@@ -37,17 +38,22 @@ class Log
 
     protected static $logLevel = 'INFO';
 
+    protected static $logFormat = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+
     public static function getInstance(): Logger
     {
-        //TODO formater
         if (empty(self::$logger)) {
             self::$logPath = Config::get('log_path') ?: self::$logPath;
             self::$logMaxFile = Config::get('log_max_file') ?: self::$logMaxFile;
             self::$logLevel = Config::get('log_level') ?: self::$logPath;
+            self::$logFormat = Config::get('log_format') ?: self::$logFormat;
 
-            static::$logger = new Logger('YanLogger');
+            $formatter = new LineFormatter(self::$logFormat);
             $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile, self::$logLevel);
+            $handler->setFormatter($formatter);
+            static::$logger = new Logger('YanLogger');
             self::$logger->pushHandler($handler);
+
         }
         return self::$logger;
     }

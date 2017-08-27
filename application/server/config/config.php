@@ -40,11 +40,16 @@ $config['log_level'] = 'DEBUG';
 /**
  * The log path
  */
-$config['log_path'] = APP_PATH . '/server/logs/server.log';
+$config['log_path'] = BASE_PATH . '/logs/server.log';
 /**
  *  Max file num, default 0(not limited)
  */
 $config['log_max_file'] = 0;
+/**
+ * Configure log format
+ * "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+ */
+$config['log_format'] = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
 
 
 /**

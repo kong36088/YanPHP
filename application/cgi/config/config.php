@@ -45,6 +45,11 @@ $config['log_path'] = BASE_PATH . '/logs/cgi.log';
  *  Max file num, default 0(not limited)
  */
 $config['log_max_file'] = 0;
+/**
+ * Configure log format
+ * "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+ */
+$config['log_format'] = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
 
 
 /**
