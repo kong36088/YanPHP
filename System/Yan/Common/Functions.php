@@ -91,17 +91,19 @@ if (!function_exists('setHeader')) {
 if (!function_exists('errorHandler')) {
     function errorHandler($severity, $errMsg, $errFile, $errLine, $errContext)
     {
-        $is_error = (((E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
-        Long\Core\ExceptionHandle::logError($severity, $errMsg, $errFile, $errLine);
+        //TODO
+        $is_error = (((E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
         if (($severity & error_reporting()) !== $severity) return;
 
-        Long\Core\ExceptionHandle::showError(["Error message: $errMsg", "Error File:$errFile", "Error Line:$errLine"]);
+        \Yan\Core\Log::error($errMsg,$errContext);
+
         /**
          * 判断是否为致命错误
          */
         if ($is_error) {
+            new \Yan\Core\Result();
             setHeader(500);
             exit(1);
         }
@@ -111,24 +113,28 @@ if (!function_exists('errorHandler')) {
 
 if (!function_exists('exceptionHandler')) {
     /**
-     * 显示处理异常
-     * @param Exception $exception
+     * 异常处理
+     * @param \Exception $exception
      */
     function exceptionHandler($exception)
     {
+        //TODO
+        \Yan\Core\Log::error($exception->getMessage(), [
+            'message' => $exception->getMessage(),
+            'code' => $exception->getCode(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine()
+        ]);
+        new \Yan\Core\Result();
+        exit(1);
     }
 }
 if (!function_exists('throwErr')) {
     function throwErr(string $message = '', int $code, $exceptionClass = '\\Exception')
     {
-        /** @var Exception $exception */
+        /** @var \Exception $exception */
         $exception = new $exceptionClass($message, $code);
-        \Yan\Core\Log::error($message, [
-            'message' => $message,
-            'code' => $exception->getCode(),
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine()
-        ]);
+
         throw $exception;
     }
 }

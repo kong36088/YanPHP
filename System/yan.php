@@ -10,16 +10,17 @@ Yan\Core\Config::initialize();
 
 Yan\Core\Log::initialize();
 
+set_exception_handler('exceptionHandler');
+set_error_handler('errorHandler');
 
 $test = new Yan\Core\Log();
 $test->debug('debug log', ['a', 'b' => BASE_PATH]);
 $test->info('info log');
-try {
-    Yan\Core\Log::notthing(123);
-} catch (Exception $e) {
-    print_r($e->getMessage());
-    print_r($e->getCode());
-}
+
+Yan\Core\Log::notthing(123);
+
+//TODO ERROR HANDLER
+//TODO ASSERTION
 
 $routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
 
