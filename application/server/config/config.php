@@ -9,17 +9,8 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  *  -------------------------------------------------------------
  * |System config                                                |
  *  -------------------------------------------------------------
- *
- * base_url
- * The Host of your application
- * Example: www.php.net
  */
-$config['base_url'] = 'vm/';
-
-/**
- * location of your application
- */
-$config['application_path'] = 'application';
+$config['namespace'] = 'App\\Server';
 
 
 /**
@@ -40,7 +31,7 @@ $config['log_level'] = 'DEBUG';
 /**
  * The log path
  */
-$config['log_path'] = BASE_PATH . '/logs/server.log';
+$config['log_path'] = BASE_PATH . '/logs/Cgi.log';
 /**
  *  Max file num, default 0(not limited)
  */
