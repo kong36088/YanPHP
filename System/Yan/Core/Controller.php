@@ -1,13 +1,10 @@
 <?php
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
 
-namespace Long\Core;
-
-use Long\Library\Logger\Log;
-use Philo\Blade\Blade;
+namespace Yan\Core;
 
 
 class Controller
@@ -57,17 +54,6 @@ class Controller
         return self::$_instance;
     }
 
-    /**
-     * render templates using blade
-     * @param string $bladeFile blade directory
-     * @param array $params the data being assigned
-     */
-    function render($bladeFile, $params = array())
-    {
-        $blade = new Blade(VIEW_PATH, CACHE_PATH);
-        $html = $blade->view()->make($bladeFile, $params)->render();
-        output($html, 'html');
-    }
 
     /**
      * To load model
@@ -76,17 +62,18 @@ class Controller
      * @param string $namespace the namespace of model
      * @return object
      */
-    protected function &model($className, $args = array(), $namespace = ''){
-        if(empty($namespace)){
+    protected function &model($className, $args = array(), $namespace = '')
+    {
+        if (empty($namespace)) {
             $namespace = $this->_modelPath;
         }
 
         $className = ucfirst($className);
-        
-        $namespace = trim($namespace,'\\\/');
+
+        $namespace = trim($namespace, '\\\/');
         $fullClassName = $namespace . '\\' . $className;
 
-        if(isset($this->_models[$fullClassName])){
+        if (isset($this->_models[$fullClassName])) {
             return $this->_models[$fullClassName];
         }
 

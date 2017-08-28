@@ -1,8 +1,8 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
 use Yan\Core\ReturnCode;
 use Yan\Core\Exception;
@@ -81,6 +81,7 @@ if (!function_exists('setHeader')) {
         if (strpos(PHP_SAPI, 'cgi') === 0) {
             header('Status:' . $code . ' ' . $status[$code], true);
         } else {
+
             $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
             header($protocol . ' ' . $code . ' ' . $status[$code], true, $code);
         }

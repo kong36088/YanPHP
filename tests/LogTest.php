@@ -14,7 +14,7 @@ class LogTest extends TestCase
 {
     public function testLog()
     {
-        Log::log('log test message');
+        Log::log('INFO', 'log test message');
         $this->assertTrue(true);
     }
 
