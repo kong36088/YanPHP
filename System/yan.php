@@ -4,6 +4,9 @@
  * Date: 2017/8/23
  * Time: 17:54
  */
+defined('YAN_VERSION') or define('YAN_VERSION', '0.1');
+
+
 require_once "Yan/Common/Functions.php";
 
 Yan\Core\Config::initialize();
@@ -19,8 +22,8 @@ $test->info('info log');
 
 Yan\Core\Log::notthing(123);
 
-//TODO ERROR HANDLER
 //TODO ASSERTION
+
 
 $routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
 

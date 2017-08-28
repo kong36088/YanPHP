@@ -17,7 +17,7 @@
   "autoload": {
     "classmap": [
       "System",
-      "application"
+      "Application"
     ]
   }
 }

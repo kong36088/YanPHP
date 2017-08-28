@@ -78,7 +78,7 @@ if (!function_exists('setHeader')) {
             throwErr('Invalid error code', 500, Exception\InvalidArgumentException::class);
         }
 
-        if (strpos(PHP_SAPI, 'cgi') === 0) {
+        if (strpos(PHP_SAPI, 'Cgi') === 0) {
             header('Status:' . $code . ' ' . $status[$code], true);
         } else {
 
@@ -104,8 +104,8 @@ if (!function_exists('errorHandler')) {
          * 判断是否为致命错误
          */
         if ($is_error) {
-            new \Yan\Core\Result();
-            setHeader(500);
+            $namespace = \Yan\Core\Config::get('namespace')?:'';
+            $result = new Result();
             exit(1);
         }
 
@@ -164,11 +164,11 @@ if (!function_exists('getInstance')) {
      *
      * Returns current Long instance object
      *
-     * @return \Long\Core\Controller
+     * @return \Yan\Core\Controller
      */
     function &getInstance()
     {
-        return \Long\Core\Controller::getInstance();
+        return \Yan\Core\Controller::getInstance();
     }
 }
 
