@@ -92,21 +92,20 @@ if (!function_exists('setHeader')) {
 if (!function_exists('errorHandler')) {
     function errorHandler($severity, $errMsg, $errFile, $errLine, $errContext)
     {
-
-        //TODO
         $is_error = (((E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
         if (($severity & error_reporting()) !== $severity) return;
 
-        \Yan\Core\Log::error($errMsg,$errContext);
+        \Yan\Core\Log::error($errMsg, $errContext);
 
         /**
          * 判断是否为致命错误
          */
         if ($is_error) {
-            $namespace = \Yan\Core\Config::get('namespace')?:'';
-            $result = new Result();
-            exit(1);
+            $namespace = \Yan\Core\Config::get('namespace') ?: '\\Yan\\Core';
+            $namespace .= '\\Compo\\Result';
+            $result = new $namespace();
+            showResult($result);
         }
 
     }
@@ -119,17 +118,30 @@ if (!function_exists('exceptionHandler')) {
      */
     function exceptionHandler($exception)
     {
-        //TODO
         \Yan\Core\Log::error($exception->getMessage(), [
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
             'file' => $exception->getFile(),
             'line' => $exception->getLine()
         ]);
-        new \Yan\Core\Result();
-        exit(1);
+        $namespace = \Yan\Core\Config::get('namespace') ?: '\\Yan\\Core';
+        $namespace .= '\\Compo\\Result';
+        $result = new $namespace($exception->getCode(), $exception->getMessage());
+        showResult($result);
     }
 }
+
+if (!function_exists('showResult')) {
+    /**
+     * 打印输出结果
+     * @param \Yan\Core\Compo\ResultInterface $result
+     */
+    function showResult(\Yan\Core\Compo\ResultInterface $result)
+    {
+        exit(json_encode($result->jsonSerialize()));
+    }
+}
+
 if (!function_exists('throwErr')) {
     function throwErr(string $message = '', int $code, $exceptionClass = '\\Exception')
     {

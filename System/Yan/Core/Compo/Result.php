@@ -6,7 +6,7 @@
  * Time: 12:06
  */
 
-namespace Yan\Core;
+namespace Yan\Core\Compo;
 
 class Result implements ResultInterface
 {
@@ -38,7 +38,7 @@ class Result implements ResultInterface
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    function jsonSerialize(): mixed
+    function jsonSerialize()
     {
         return ['code' => $this->code, 'message' => $this->message, 'data' => $this->data];
     }

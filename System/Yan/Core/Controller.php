@@ -81,4 +81,12 @@ class Controller
         $this->_models[$fullClassName] = $ReflectionClass->newInstance($args);
         return $this->_models[$fullClassName];
     }
+
+    protected function succ(){
+
+    }
+
+    protected function fail(){
+
+    }
 }

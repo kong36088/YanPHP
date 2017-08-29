@@ -6,7 +6,7 @@
  * Time: 18:22
  */
 
-namespace Yan\Core;
+namespace Yan\Core\Compo;
 
 
 interface ResultInterface extends \JsonSerializable
