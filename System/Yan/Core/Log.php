@@ -11,6 +11,8 @@ namespace Yan\Core;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
+use Monolog\Processor\IntrospectionProcessor;
+use Monolog\Processor\ProcessIdProcessor;
 
 /**
  * Class Log
@@ -51,9 +53,7 @@ class Log
             $formatter = new LineFormatter(self::$logFormat);
             $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile, self::$logLevel);
             $handler->setFormatter($formatter);
-            static::$logger = new Logger('YanLogger');
-            self::$logger->pushHandler($handler);
-
+            self::$logger = new Logger('YanLogger', [$handler], [new ProcessIdProcessor(), new IntrospectionProcessor(Logger::DEBUG, ['Yan\\Core\\Log'])]);
         }
         return self::$logger;
     }

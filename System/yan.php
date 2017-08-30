@@ -16,9 +16,9 @@ Yan\Core\Log::initialize();
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 
-$test = new Yan\Core\Log();
-$test->debug('debug log', ['a', 'b' => BASE_PATH]);
-$test->info('info log');
+
+\Yan\Core\Log::debug('debug log', ['a', 'b' => BASE_PATH]);
+exit;
 
 Yan\Core\Log::notthing(123);
 
