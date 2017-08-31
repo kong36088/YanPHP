@@ -10,7 +10,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  * |System config                                                |
  *  -------------------------------------------------------------
  */
-$config['namespace'] = 'App\\Cgi';
+$config['namespace'] = 'App\\Server';
 
 
 /**
@@ -31,7 +31,7 @@ $config['log_level'] = 'DEBUG';
 /**
  * The log path
  */
-$config['log_path'] = BASE_PATH . '/logs/cgi.log';
+$config['log_path'] = BASE_PATH . '/logs/server.log';
 /**
  *  Max file num, default 0(not limited)
  */
