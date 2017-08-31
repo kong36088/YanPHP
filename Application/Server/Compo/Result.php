@@ -6,7 +6,7 @@
  * Time: 12:06
  */
 
-namespace App\Cgi\Compo;
+namespace App\Server\Compo;
 
 use Yan\Core\Compo\ResultInterface;
 

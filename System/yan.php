@@ -16,13 +16,7 @@ Yan\Core\Log::initialize();
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 
-
-\Yan\Core\Log::debug('debug log', ['a', 'b' => BASE_PATH]);
-exit;
-
-Yan\Core\Log::notthing(123);
-
-//TODO ASSERTION
+\Yan\Core\YAssert::endsWith("123","1");
 
 
 $routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
