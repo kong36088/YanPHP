@@ -73,7 +73,7 @@ class Config
             throwErr('Wrong file name', ReturnCode::SYSTEM_ERROR, Exception\RuntimeException::class);
         }
 
-        $filePath = BASE_PATH . '/config/' . $file;
+        $filePath = BASE_PATH . '/Config/' . $file;
 
         if (!file_exists($filePath)) {
             throwErr("File {$file} doesn't exists", ReturnCode::SYSTEM_ERROR, Exception\RuntimeException::class);
