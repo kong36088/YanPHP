@@ -40,7 +40,7 @@ $config['log_max_file'] = 0;
  * Configure log format
  * "[%datetime%] %channel%.%level_name%: %message% %context%\n";
  */
-$config['log_format'] = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+$config['log_format'] = "[%datetime%]-%extra.process_id% %channel%.%level_name%: file=%extra.file% line=%extra.line% %message% %context%\n";
 
 
 /**

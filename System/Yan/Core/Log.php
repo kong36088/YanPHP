@@ -40,7 +40,7 @@ class Log
 
     protected static $logLevel = 'INFO';
 
-    protected static $logFormat = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+    protected static $logFormat = "[%datetime%]-%extra.process_id% %channel%.%level_name%: file=%extra.file% line=%extra.line% %message% %context%\n";
 
     public static function getInstance(): Logger
     {
