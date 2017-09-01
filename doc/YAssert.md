@@ -3,7 +3,7 @@ YAssert is powered by [beberlei/assert](https://github.com/beberlei/assert).
 
 ## YAssert Example usages
 
-```php
+``` php
 <?php
 use Assert\Assertion;
 
@@ -24,11 +24,11 @@ Real time usage with [Azure Blob Storage](https://github.com/beberlei/azure-blob
 <?php
 public function putBlob($containerName = '', $blobName = '', $localFileName = '', $metadata = array(), $leaseId = null, $additionalHeaders = array())
 {
-    Assertion::notEmpty($containerName, 'Container name is not specified');
+    YAssert::notEmpty($containerName, 'Container name is not specified');
     self::assertValidContainerName($containerName);
-    Assertion::notEmpty($blobName, 'Blob name is not specified.');
-    Assertion::notEmpty($localFileName, 'Local file name is not specified.');
-    Assertion::file($localFileName, 'Local file name is not specified.');
+    YAssert::notEmpty($blobName, 'Blob name is not specified.');
+    YAssert::notEmpty($localFileName, 'Local file name is not specified.');
+    YAssert::file($localFileName, 'Local file name is not specified.');
     self::assertValidRootContainerBlobName($containerName, $blobName);
 
     // Check file size
@@ -45,7 +45,7 @@ public function putBlob($containerName = '', $blobName = '', $localFileName = ''
 
 A helper method (`YAssert::nullOr*`) is provided to check if a value is null OR holds for the assertion:
 
-```php
+``` php
 <?php
 YAssert::nullOrMax(null, 42); // success
 YAssert::nullOrMax(1, 42);    // success
@@ -58,7 +58,7 @@ The `Assertion::all*` method checks if all provided values hold for the
 assertion. It will throw an exception of the assertion does not hold for one of
 the values:
 
-```php
+``` php
 <?php
 YAssert::allIsInstanceOf(array(new \stdClass, new \stdClass), 'stdClass'); // success
 YAssert::allIsInstanceOf(array(new \stdClass, new \stdClass), 'PDO');      // exception

@@ -21,6 +21,8 @@ set_error_handler('errorHandler');
 
 $routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
 
+
+
 $routeCollector->addRoute('GET', '/', 'test_handler');
 $routeCollector->addRoute('GET', '/interface.php', 'test_handler');
 

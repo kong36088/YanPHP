@@ -6,7 +6,8 @@
     "monolog/monolog": "1.*",
     "beberlei/assert": "2.*",
     "respect/validation": "1.*",
-    "nikic/fast-route": "1.*"
+    "nikic/fast-route": "1.*",
+    "illuminate/database": "5.*"
   },
   "authors": [
     {
