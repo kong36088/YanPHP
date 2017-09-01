@@ -43,13 +43,13 @@ public function putBlob($containerName = '', $blobName = '', $localFileName = ''
 
 ### NullOr helper
 
-A helper method (`Assertion::nullOr*`) is provided to check if a value is null OR holds for the assertion:
+A helper method (`YAssert::nullOr*`) is provided to check if a value is null OR holds for the assertion:
 
 ```php
 <?php
-Assertion::nullOrMax(null, 42); // success
-Assertion::nullOrMax(1, 42);    // success
-Assertion::nullOrMax(1337, 42); // exception
+YAssert::nullOrMax(null, 42); // success
+YAssert::nullOrMax(1, 42);    // success
+YAssert::nullOrMax(1337, 42); // exception
 ```
 
 ### All helper
@@ -60,88 +60,9 @@ the values:
 
 ```php
 <?php
-Assertion::allIsInstanceOf(array(new \stdClass, new \stdClass), 'stdClass'); // success
-Assertion::allIsInstanceOf(array(new \stdClass, new \stdClass), 'PDO');      // exception
+YAssert::allIsInstanceOf(array(new \stdClass, new \stdClass), 'stdClass'); // success
+YAssert::allIsInstanceOf(array(new \stdClass, new \stdClass), 'PDO');      // exception
 ```
-
-### Assert::that() Chaining
-
-Using the static API on values is very verbose when checking values against multiple assertions.
-Starting with 2.6.7 of Assert the `Assert` class provides a much nicer fluent API for assertions, starting
-with `Assert::that($value)` and then receiving the assertions you want to call
-on the fluent interface. You only have to specify the `$value` once.
-
-```php
-<?php
-Assert::that($value)->notEmpty()->integer();
-Assert::that($value)->nullOr()->string()->startsWith("Foo");
-Assert::that($values)->all()->float();
-```
-
-There are also two shortcut function `Assert::thatNullOr()` and `Assert::thatAll()` enabling
-the "nullOr" or "all" helper respectively.
-
-### \Assert\that()
-Previously (starting with version 2.0 of Assert) this fluent interface was provided by the functions
-`\Assert\that()`, `\Assert\thatNullOr()` and `\Assert\thatAll()` respectively. These functions have
-been deprecated in favor of the static methods described above and will be removed in version 3.0 of Assert.
-
-### Lazy Assertions
-
-There are many cases in web development, especially when involving forms, you want to collect several errors
-instead of aborting directly on the first error. This is what lazy assertions are for. Their API
-works exactly like the fluent ``Assert::that()`` API, but instead of throwing an Exception directly,
-they collect all errors and only trigger the exception when the method
-``verifyNow()`` is called on the ``Assert\SoftAssertion`` object.
-
-```php
-<?php
-Assert::lazy()
-    ->that(10, 'foo')->string()
-    ->that(null, 'bar')->notEmpty()
-    ->that('string', 'baz')->isArray()
-    ->verifyNow();
-```
-
-The method ``that($value, $propertyPath)`` requires a property path (name), so that you know how to differentiate
-the errors afterwards.
-
-On failure ``verifyNow()`` will throw an exception
-``Assert\\LazyAssertionException`` with a combined message:
-
-    The following 3 assertions failed:
-    1) foo: Value "10" expected to be string, type integer given.
-    2) bar: Value "<NULL>" is empty, but non empty value was expected.
-    3) baz: Value "string" is not an array.
-
-You can also retrieve all the ``AssertionFailedException``s by calling ``getErrorExceptions()``.
-This can be useful for example to build a failure response for the user.
-
-For those looking to capture multiple errors on a single value when using a lazy assertion chain,
-you may follow your call to ``that`` with ``tryAll`` to run all assertions against the value, and
-capture all of the resulting failed assertion error messages. Here's an example:
-
-```php
-Assert::lazy()
-    ->that(10, 'foo')->tryAll()->integer()->between(5, 15)
-    ->that(null, 'foo')->tryAll()->notEmpty()->string()
-    ->verifyNow();
-```
-
-The above shows how to use this functionality to finely tune the behavior of reporting failures, but to make
-catching all failures even easier, you may also call ``tryAll`` before making any assertions like below. This
-helps to reduce method calls, and has the same behavior as above.
-
-```php
-Assert::lazy()->tryAll()
-    ->that(10, 'foo')->integer()->between(5, 15)
-    ->that(null, 'foo')->notEmpty()->string()
-    ->verifyNow();
-```
-
-### \Assert\lazy()
-As with the `Assert` chaining methods lazy assertions were initiated by the function `\Assert\lazy()` that
-has been deprecated since version 2.6.7. As of the release of version 3.0 this function will no longer be available.
 
 ## List of assertions
 
@@ -149,87 +70,87 @@ has been deprecated since version 2.6.7. As of the release of version 3.0 this f
 <?php
 use Assert\Assertion;
 
-Assertion::alnum(mixed $value);
-Assertion::between(mixed $value, mixed $lowerLimit, mixed $upperLimit);
-Assertion::betweenExclusive(mixed $value, mixed $lowerLimit, mixed $upperLimit);
-Assertion::betweenLength(mixed $value, int $minLength, int $maxLength);
-Assertion::boolean(mixed $value);
-Assertion::choice(mixed $value, array $choices);
-Assertion::choicesNotEmpty(array $values, array $choices);
-Assertion::classExists(mixed $value);
-Assertion::contains(mixed $string, string $needle);
-Assertion::count(array|\Countable $countable, array|\Countable $count);
-Assertion::date(string $value, string $format);
-Assertion::defined(mixed $constant);
-Assertion::digit(mixed $value);
-Assertion::directory(string $value);
-Assertion::e164(string $value);
-Assertion::email(mixed $value);
-Assertion::endsWith(mixed $string, string $needle);
-Assertion::eq(mixed $value, mixed $value2);
-Assertion::extensionLoaded(mixed $value);
-Assertion::extensionVersion(string $extension, string $operator, mixed $version);
-Assertion::false(mixed $value);
-Assertion::file(string $value);
-Assertion::float(mixed $value);
-Assertion::greaterOrEqualThan(mixed $value, mixed $limit);
-Assertion::greaterThan(mixed $value, mixed $limit);
-Assertion::implementsInterface(mixed $class, string $interfaceName);
-Assertion::inArray(mixed $value, array $choices);
-Assertion::integer(mixed $value);
-Assertion::integerish(mixed $value);
-Assertion::interfaceExists(mixed $value);
-Assertion::ip(string $value, int $flag = null);
-Assertion::ipv4(string $value, int $flag = null);
-Assertion::ipv6(string $value, int $flag = null);
-Assertion::isArray(mixed $value);
-Assertion::isArrayAccessible(mixed $value);
-Assertion::isCallable(mixed $value);
-Assertion::isInstanceOf(mixed $value, string $className);
-Assertion::isJsonString(mixed $value);
-Assertion::isObject(mixed $value);
-Assertion::isResource(mixed $value);
-Assertion::isTraversable(mixed $value);
-Assertion::keyExists(mixed $value, string|int $key);
-Assertion::keyIsset(mixed $value, string|int $key);
-Assertion::keyNotExists(mixed $value, string|int $key);
-Assertion::length(mixed $value, int $length);
-Assertion::lessOrEqualThan(mixed $value, mixed $limit);
-Assertion::lessThan(mixed $value, mixed $limit);
-Assertion::max(mixed $value, mixed $maxValue);
-Assertion::maxLength(mixed $value, int $maxLength);
-Assertion::methodExists(string $value, mixed $object);
-Assertion::min(mixed $value, mixed $minValue);
-Assertion::minLength(mixed $value, int $minLength);
-Assertion::noContent(mixed $value);
-Assertion::notBlank(mixed $value);
-Assertion::notEmpty(mixed $value);
-Assertion::notEmptyKey(mixed $value, string|int $key);
-Assertion::notEq(mixed $value1, mixed $value2);
-Assertion::notInArray(mixed $value, array $choices);
-Assertion::notIsInstanceOf(mixed $value, string $className);
-Assertion::notNull(mixed $value);
-Assertion::notSame(mixed $value1, mixed $value2);
-Assertion::null(mixed $value);
-Assertion::numeric(mixed $value);
-Assertion::objectOrClass(mixed $value);
-Assertion::phpVersion(string $operator, mixed $version);
-Assertion::propertiesExist(mixed $value, array $properties);
-Assertion::propertyExists(mixed $value, string $property);
-Assertion::range(mixed $value, mixed $minValue, mixed $maxValue);
-Assertion::readable(string $value);
-Assertion::regex(mixed $value, string $pattern);
-Assertion::same(mixed $value, mixed $value2);
-Assertion::satisfy(mixed $value, callable $callback);
-Assertion::scalar(mixed $value);
-Assertion::startsWith(mixed $string, string $needle);
-Assertion::string(mixed $value);
-Assertion::subclassOf(mixed $value, string $className);
-Assertion::true(mixed $value);
-Assertion::url(mixed $value);
-Assertion::uuid(string $value);
-Assertion::version(string $version1, string $operator, string $version2);
-Assertion::writeable(string $value);
+YAssert::alnum(mixed $value);
+YAssert::between(mixed $value, mixed $lowerLimit, mixed $upperLimit);
+YAssert::betweenExclusive(mixed $value, mixed $lowerLimit, mixed $upperLimit);
+YAssert::betweenLength(mixed $value, int $minLength, int $maxLength);
+YAssert::boolean(mixed $value);
+YAssert::choice(mixed $value, array $choices);
+YAssert::choicesNotEmpty(array $values, array $choices);
+YAssert::classExists(mixed $value);
+YAssert::contains(mixed $string, string $needle);
+YAssert::count(array|\Countable $countable, array|\Countable $count);
+YAssert::date(string $value, string $format);
+YAssert::defined(mixed $constant);
+YAssert::digit(mixed $value);
+YAssert::directory(string $value);
+YAssert::e164(string $value);
+YAssert::email(mixed $value);
+YAssert::endsWith(mixed $string, string $needle);
+YAssert::eq(mixed $value, mixed $value2);
+YAssert::extensionLoaded(mixed $value);
+YAssert::extensionVersion(string $extension, string $operator, mixed $version);
+YAssert::false(mixed $value);
+YAssert::file(string $value);
+YAssert::float(mixed $value);
+YAssert::greaterOrEqualThan(mixed $value, mixed $limit);
+YAssert::greaterThan(mixed $value, mixed $limit);
+YAssert::implementsInterface(mixed $class, string $interfaceName);
+YAssert::inArray(mixed $value, array $choices);
+YAssert::integer(mixed $value);
+YAssert::integerish(mixed $value);
+YAssert::interfaceExists(mixed $value);
+YAssert::ip(string $value, int $flag = null);
+YAssert::ipv4(string $value, int $flag = null);
+YAssert::ipv6(string $value, int $flag = null);
+YAssert::isArray(mixed $value);
+YAssert::isArrayAccessible(mixed $value);
+YAssert::isCallable(mixed $value);
+YAssert::isInstanceOf(mixed $value, string $className);
+YAssert::isJsonString(mixed $value);
+YAssert::isObject(mixed $value);
+YAssert::isResource(mixed $value);
+YAssert::isTraversable(mixed $value);
+YAssert::keyExists(mixed $value, string|int $key);
+YAssert::keyIsset(mixed $value, string|int $key);
+YAssert::keyNotExists(mixed $value, string|int $key);
+YAssert::length(mixed $value, int $length);
+YAssert::lessOrEqualThan(mixed $value, mixed $limit);
+YAssert::lessThan(mixed $value, mixed $limit);
+YAssert::max(mixed $value, mixed $maxValue);
+YAssert::maxLength(mixed $value, int $maxLength);
+YAssert::methodExists(string $value, mixed $object);
+YAssert::min(mixed $value, mixed $minValue);
+YAssert::minLength(mixed $value, int $minLength);
+YAssert::noContent(mixed $value);
+YAssert::notBlank(mixed $value);
+YAssert::notEmpty(mixed $value);
+YAssert::notEmptyKey(mixed $value, string|int $key);
+YAssert::notEq(mixed $value1, mixed $value2);
+YAssert::notInArray(mixed $value, array $choices);
+YAssert::notIsInstanceOf(mixed $value, string $className);
+YAssert::notNull(mixed $value);
+YAssert::notSame(mixed $value1, mixed $value2);
+YAssert::null(mixed $value);
+YAssert::numeric(mixed $value);
+YAssert::objectOrClass(mixed $value);
+YAssert::phpVersion(string $operator, mixed $version);
+YAssert::propertiesExist(mixed $value, array $properties);
+YAssert::propertyExists(mixed $value, string $property);
+YAssert::range(mixed $value, mixed $minValue, mixed $maxValue);
+YAssert::readable(string $value);
+YAssert::regex(mixed $value, string $pattern);
+YAssert::same(mixed $value, mixed $value2);
+YAssert::satisfy(mixed $value, callable $callback);
+YAssert::scalar(mixed $value);
+YAssert::startsWith(mixed $string, string $needle);
+YAssert::string(mixed $value);
+YAssert::subclassOf(mixed $value, string $className);
+YAssert::true(mixed $value);
+YAssert::url(mixed $value);
+YAssert::uuid(string $value);
+YAssert::version(string $version1, string $operator, string $version2);
+YAssert::writeable(string $value);
 
 ```
 
@@ -242,24 +163,19 @@ You can pass an argument called ```$message``` to any assertion to control the
 exception message. Every exception contains a default message and unique message code
 by default.
 
-```php
+``` php
 <?php
-use Assert\Assertion;
-use Assert\AssertionFailedException;
+use Yan\Core\YAssert;
+use Yan\Core\Exception\YAssertionFailedException;
 
 try {
-    Assertion::integer($value, "The pressure of gas is measured in integers.");
-} catch(AssertionFailedException $e) {
+    YAssert::integer($value, "The pressure of gas is measured in integers.");
+} catch(YAssertionFailedException $e) {
     // error handling
     $e->getValue(); // the value that caused the failure
     $e->getConstraints(); // the additional constraints of the assertion.
 }
 ```
-
-``Assert\AssertionFailedException`` is just an interface and the default
-implementation is ``Assert\InvalidArgumentException`` which extends the SPL
-``InvalidArgumentException``. You can change the exception being used on a
-package based level.
 
 ### Customised exception messages
 
@@ -277,25 +193,3 @@ failed.
 The callback should return the string that will be used as the exception
 message.
 
-## Your own Assertion class
-
-To shield your library from possible bugs, misinterpretations or BC breaks
-inside Assert you should introduce a library/project based assertion subclass,
-where you can override the exception thrown as well. In addition, you can
-override the ``Assert\Assertion::stringify()`` method to provide your own
-interpretations of the types during error handling.
-
-```php
-<?php
-namespace MyProject;
-
-use Assert\Assertion as BaseAssertion;
-
-class Assertion extends BaseAssertion
-{
-    protected static $exceptionClass = 'MyProject\AssertionFailedException';
-}
-```
-
-## Contributing
-Please see [CONTRIBUTING](CONTRIBUTING.md) for more details.
