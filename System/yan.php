@@ -18,7 +18,14 @@ set_error_handler('errorHandler');
 
 \Yan\Core\YAssert::endsWith("123","1");
 
+/**
+ * database
+ */
+\Yan\Core\Database::initialize();
 
+/**
+ * router
+ */
 $routeCollector = new \FastRoute\RouteCollector(new FastRoute\RouteParser\Std(), new FastRoute\DataGenerator\GroupCountBased());
 
 $routeCollector->addRoute('GET', '/', 'test_handler');
