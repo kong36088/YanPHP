@@ -4,8 +4,10 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  * YanPHP
  * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
+use Yan\Core\Log;
 use Yan\Core\ReturnCode;
 use Yan\Core\Exception;
+use Yan\Core\Config;
 
 if (!function_exists('isCli')) {
     /**
@@ -96,13 +98,13 @@ if (!function_exists('errorHandler')) {
 
         if (($severity & error_reporting()) !== $severity) return;
 
-        \Yan\Core\Log::error($errMsg, $errContext);
+        Log::error($errMsg, $errContext);
 
         /**
          * 判断是否为致命错误
          */
         if ($is_error) {
-            $namespace = \Yan\Core\Config::get('namespace') ?: '\\Yan\\Core';
+            $namespace = Config::get('namespace') ?: '\\Yan\\Core';
             $namespace .= '\\Compo\\Result';
             $result = new $namespace();
             showResult($result);
@@ -118,15 +120,16 @@ if (!function_exists('exceptionHandler')) {
      */
     function exceptionHandler($exception)
     {
+        $code = $exception->getCode() == 0 ? ReturnCode::SYSTEM_ERROR : $exception->getCode();
         \Yan\Core\Log::error($exception->getMessage(), [
             'message' => $exception->getMessage(),
-            'code' => $exception->getCode(),
+            'code' => $code,
             'file' => $exception->getFile(),
             'line' => $exception->getLine()
         ]);
-        $namespace = \Yan\Core\Config::get('namespace') ?: '\\Yan\\Core';
+        $namespace = Config::get('namespace') ?: '\\Yan\\Core';
         $namespace .= '\\Compo\\Result';
-        $result = new $namespace($exception->getCode(), $exception->getMessage());
+        $result = new $namespace($code, $exception->getMessage());
         showResult($result);
     }
 }
@@ -138,6 +141,7 @@ if (!function_exists('showResult')) {
      */
     function showResult(\Yan\Core\Compo\ResultInterface $result)
     {
+        Log::info($result->getMessage(),$result->jsonSerialize());
         exit(json_encode($result->jsonSerialize()));
     }
 }
@@ -149,23 +153,6 @@ if (!function_exists('throwErr')) {
         $exception = new $exceptionClass($message, $code);
 
         throw $exception;
-    }
-}
-
-if (!function_exists('M')) {
-    function &M($name)
-    {
-        $modelName = ucfirst($name) . 'Model';
-        $modelFile = ucfirst($name) . 'Model.php';
-        $filePath = BASE_PATH . '/Model/' . $modelFile;
-
-        //判断文件是否存在
-        if (!file_exists($filePath)) {
-            throwErr("Model {$name} does not exist", ReturnCode::SYSTEM_ERROR, Exception\RuntimeException ::class);
-        }
-        $model = 'Model\\' . $modelName;
-        $M = new $model();
-        return $M;
     }
 }
 
@@ -228,5 +215,25 @@ if (!function_exists('input')) {
             default:
                 return Yan\Core\Input::input($keyArr[1]);
         }
+    }
+}
+
+if (!function_exists('genResult')) {
+    function genResult(int $code, string $msg, array $data = []): \Yan\Core\Compo\ResultInterface
+    {
+        $namespace = Config::get('namespace') ?: '\\Yan\\Core';
+        $namespace .= '\\Compo\\Result';
+        return new $namespace($code, $msg, $data);
+    }
+}
+
+if (!function_exists('show404')) {
+    function show404()
+    {
+        $code = ReturnCode::REQUEST_404;
+        $msg = '404 Not Found';
+        header("HTTP/1.1 404 Not Found");
+        $result = genResult($code, $msg);
+        showResult($result);
     }
 }

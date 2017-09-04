@@ -22,11 +22,10 @@ class Config
      */
     public static function initialize()
     {
-        self::loadConfig('autoload', true);
-        $autoload = self::get('autoload_config');
-        if (is_array($autoload)) {
-            foreach ($autoload as $k => $configFile) {
-                self::loadConfig($configFile, true);
+        $files = scandir(BASE_PATH . '/Config');
+        foreach ($files as $file) {
+            if (preg_match("/.*\.php$/", $file)) {
+                self::loadConfig($file, true);
             }
         }
     }

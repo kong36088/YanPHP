@@ -17,6 +17,8 @@ class ReturnCode
     const METHOD_NOT_EXIST                      = -2; //方法不存在
 
     //逻辑错误------------------------------------------------------------
-    const INVALID_ARGUMENT                      = 5001; //参数错误
+    const REQUEST_404                           = 5001; //请求404
+    const REQUEST_METHOD_NOT_ALLOW              = 5002; //请求方法不允许
+    const INVALID_ARGUMENT                      = 5003; //参数错误
 
 }

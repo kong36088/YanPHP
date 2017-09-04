@@ -43,10 +43,8 @@ class Controller
     public function __construct()
     {
         self::$_instance = &$this;
-        $this->_libraryPath = Config::get('application_path') . '\\Library';
-        $this->_modelPath = Config::get('application_path') . '\\Model';
 
-        Log::debug('Init Controller ' . __CLASS__);
+        Log::debug('Init Controller ' . static::class);
     }
 
     public static function &getInstance()
@@ -55,38 +53,15 @@ class Controller
     }
 
 
-    /**
-     * To load model
-     * @param string $className model class name
-     * @param array $args
-     * @param string $namespace the namespace of model
-     * @return object
-     */
-    protected function &model($className, $args = array(), $namespace = '')
+    protected function succ(string $msg = '', array $data = [])
     {
-        if (empty($namespace)) {
-            $namespace = $this->_modelPath;
-        }
-
-        $className = ucfirst($className);
-
-        $namespace = trim($namespace, '\\\/');
-        $fullClassName = $namespace . '\\' . $className;
-
-        if (isset($this->_models[$fullClassName])) {
-            return $this->_models[$fullClassName];
-        }
-
-        $ReflectionClass = new \ReflectionClass($fullClassName);
-        $this->_models[$fullClassName] = $ReflectionClass->newInstance($args);
-        return $this->_models[$fullClassName];
+        $result = genResult(ReturnCode::OK, $msg, $data);
+        showResult($result);
     }
 
-    protected function succ(){
-
-    }
-
-    protected function fail(){
-
+    protected function fail(int $code, string $msg = '', array $data = [])
+    {
+        $result = genResult($code, $msg, $data);
+        showResult($result);
     }
 }

@@ -40,7 +40,7 @@ class Log
 
     protected static $logLevel = 'INFO';
 
-    protected static $logFormat = "[%datetime%]-%extra.process_id% %channel%.%level_name%: file=%extra.file% line=%extra.line% %message% %context%\n";
+    protected static $logFormat = "[%datetime%]-%extra.process_id% %channel%.%level_name%: %message% %context%\n";
 
     public static function getInstance(): Logger
     {
@@ -53,7 +53,7 @@ class Log
             $formatter = new LineFormatter(self::$logFormat);
             $handler = new RotatingFileHandler(self::$logPath, self::$logMaxFile, self::$logLevel);
             $handler->setFormatter($formatter);
-            self::$logger = new Logger('YanLogger', [$handler], [new ProcessIdProcessor(), new IntrospectionProcessor(Logger::DEBUG, ['Yan\\Core\\Log'])]);
+            self::$logger = new Logger('YanLogger', [$handler], [new ProcessIdProcessor()]);
         }
         return self::$logger;
     }
