@@ -9,12 +9,21 @@
 namespace App\Cgi\Controller;
 
 
+use App\Cgi\Compo\Result;
+use Yan\Core\Compo\ResultInterface;
 use Yan\Core\Controller;
+use Yan\Core\ReturnCode;
 
 class UserController extends Controller
 {
 
-    public function index(){
-        $this->succ('succ');
+    public function index(): ResultInterface
+    {
+        return $this->succ('succ');
+    }
+
+    public function getUser(): ResultInterface
+    {
+        return new Result(ReturnCode::OK, '', []);
     }
 }

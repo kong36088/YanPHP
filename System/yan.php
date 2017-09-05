@@ -29,5 +29,11 @@ set_error_handler('errorHandler');
 $dispatch = \Yan\Core\Dispatcher::dispatch();
 
 $controller = new $dispatch[0];
-$controller->$dispatch[1];
-//TODO 入参校验、层级调用
+$result = call_user_func([$controller, $dispatch[1]]);
+
+if (!$result instanceof \Yan\Core\Compo\ResultInterface) {
+    throwErr('result is not instance of ResultInterface',\Yan\Core\ReturnCode::SYSTEM_ERROR,RuntimeException::class);
+}
+
+showResult($result);
+//TODO 入参校验

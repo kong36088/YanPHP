@@ -55,13 +55,11 @@ class Controller
 
     protected function succ(string $msg = '', array $data = [])
     {
-        $result = genResult(ReturnCode::OK, $msg, $data);
-        showResult($result);
+        return genResult(ReturnCode::OK, $msg, $data);
     }
 
     protected function fail(int $code, string $msg = '', array $data = [])
     {
-        $result = genResult($code, $msg, $data);
-        showResult($result);
+        return genResult($code, $msg, $data);
     }
 }
