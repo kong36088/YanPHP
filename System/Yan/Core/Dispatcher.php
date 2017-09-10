@@ -32,7 +32,7 @@ class Dispatcher
 
         Log::debug('request uri=' . $uri . ' method=' . $httpMethod);
 
-        $uri = substr($uri, strpos($uri, '/interface.php') + 14) ?: $uri;
+        $uri = substr($uri, strpos($uri, '/interface.php') + 14) ?? $uri;
 
         // Strip query string (?foo=bar) and decode URI
         if (false !== $pos = strpos($uri, '?')) {
@@ -108,8 +108,8 @@ class Dispatcher
             $appPathArr[1] = preg_replace('/(\?.*)$/', '', $appPathArr[1]);
         }
         $appRequest = array(
-            'controller' => $appPathArr[0],
-            'method' => $appPathArr[1],
+            'controller' => $appPathArr[0] ?? '',
+            'method' => $appPathArr[1] ?? '',
         );
         return $appRequest;
     }

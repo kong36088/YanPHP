@@ -98,7 +98,7 @@ if (!function_exists('errorHandler')) {
 
         if (($severity & error_reporting()) !== $severity) return;
 
-        Log::error($errMsg, $errContext);
+        Log::error($errMsg, ['file' => $errFile, 'line' => $errLine, 'msg' => $errMsg]);
 
         /**
          * 判断是否为致命错误
@@ -141,7 +141,7 @@ if (!function_exists('showResult')) {
      */
     function showResult(\Yan\Core\Compo\ResultInterface $result)
     {
-        Log::info($result->getMessage(),$result->jsonSerialize());
+        Log::info($result->getMessage(), $result->jsonSerialize());
         exit(json_encode($result->jsonSerialize()));
     }
 }
