@@ -11,5 +11,14 @@ namespace Yan\Core;
 
 class Validator
 {
+    /** @var \Respect\Validation\Validator  */
+    protected static $validator = null;
 
+    public static function initialize(){
+        self::$validator = \Respect\Validation\Validator::class;
+    }
+
+    public static function validate(){
+
+    }
 }
