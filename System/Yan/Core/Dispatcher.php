@@ -129,7 +129,13 @@ class Dispatcher
         if (empty($handlerArr[0])) {
             show404();
         }
-        if (!method_exists($handlerArr[0], $handlerArr[1])) {
+
+        if (!class_exists($handlerArr[0]) || !method_exists($handlerArr[0], $handlerArr[1])) {
+            show404();
+        }
+        $class = new \ReflectionClass($handlerArr[0]);
+        $method = $class->getMethod($handlerArr[1]);
+        if (!$method->isPublic()) {
             show404();
         }
         return $handlerArr;
