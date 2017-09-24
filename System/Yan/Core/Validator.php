@@ -59,20 +59,25 @@ class Validator
         $rulesArr = explode('|', $rules);
         //遍历所有用户定义的规则
         foreach ($rulesArr as $r) {
-            preg_match('/(.*)(\[.*\])/', $r, $matches);
-            $rule = $matches[0];
+            if(empty($r)){
+                continue;
+            }
+
+            preg_match('/([a-zA-Z_]*)(\[.*\]){0,1}/', $r, $matches);
+            $rule = $matches[1];
             //规则是否存在
             if (!array_key_exists($rule, self::$rules)) {
                 $resultMsg = "incorrect rule '{$r}'";
                 return false;
             }
 
-            $ruleParams = explode(',', $matches[1]);
-            if (!isset($rulesParams) || !isset($ruleParams[0])) {
+            $ruleParams = explode(',', $matches[2]);
+            if (!isset($rulesParams) || !isset($ruleParams[1])) {
                 $ruleParams = array();
             }
 
             $validate = call_user_func_array([v::class, self::$rules[$rule]], $ruleParams);
+            var_dump($input,$validate);exit;
             try {
                 $validate->aseert($input);
             }catch (NestedValidationException $exception){

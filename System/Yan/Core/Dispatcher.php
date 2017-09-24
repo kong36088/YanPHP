@@ -16,6 +16,12 @@ class Dispatcher
 {
     /** @var string 匹配路径 */
     protected static $handler = '';
+    /** @var string 请求控制器类名 */
+    public static $controller = '';
+    /** @var string 请求方法 */
+    public static $method = '';
+    /** @var string 请求控制器short name */
+    public static $controllerShortName = '';
 
     public static function initialize()
     {
@@ -138,6 +144,10 @@ class Dispatcher
         if (!$method->isPublic()) {
             show404();
         }
+        self::$controller = $handlerArr[0];
+        self::$method = $handlerArr[1];
+        self::$controllerShortName = getClassName($handlerArr[0]);
+
         return $handlerArr;
     }
 

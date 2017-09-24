@@ -7,16 +7,43 @@
 namespace Yan\Core;
 
 
+use Yan\Core\Exception\FileNotExistException;
+use Yan\Core\Exception\InvalidArgumentException;
+use Yan\Core\Exception\RuntimeException;
+
 class Input
 {
-    protected static $_data = array();
+    protected static $data = array();
 
-    protected static $_method;
+    protected static $method;
 
     public static function initialize()
     {
-        self::$_method = strtoupper($_SERVER['REQUEST_METHOD']);
-        parse_str(file_get_contents('php://input'), self::$_data);
+        self::$method = strtoupper($_SERVER['REQUEST_METHOD']);
+        parse_str(file_get_contents('php://input'),$input);
+        $input = array_merge($input,self::get());
+        $input = array_merge($input,self::post());
+
+
+
+        //根据Param/xxx.ini中配置的入参进行筛选
+        $paramFile = BASE_PATH . '/Param/' . Dispatcher::$controllerShortName . '.ini';
+        if (!file_exists($paramFile)) {
+            throwErr("file {$paramFile} does not exist", ReturnCode::SYSTEM_ERROR, FileNotExistException::class);
+        }
+        $paramRules = parse_ini_file($paramFile);
+        if (!$paramRules) {
+            throwErr("can not parse file {$paramFile}", ReturnCode::SYSTEM_ERROR, RuntimeException::class);
+        }
+        //规则验证
+        foreach ($paramRules as $key => $rule) {
+            $ret = Validator::validate($input[$key], $rule, $msg);
+            if (!$ret) {
+                throwErr($msg, ReturnCode::INVALID_ARGUMENT, InvalidArgumentException::class);
+            }
+            self::$data[$key] = $input[$key];
+        }
+
     }
 
     public static function get($key = '')
@@ -27,17 +54,13 @@ class Input
 
     public static function post($key = '')
     {
-        //print_r(self::$_data);
-        if (self::$_method === 'POST') {
-            return self::getRaw($key);
-        } else {
-            return null;
-        }
+        if (empty($key)) return self::_clean($_POST);
+        return isset($_POST[$key]) ? self::_clean($_POST[$key]) : null;
     }
 
     public static function put($key = '')
     {
-        if (self::$_method === 'PUT') {
+        if (self::$method === 'PUT') {
             return self::getRaw($key);
         } else {
             return null;
@@ -46,7 +69,7 @@ class Input
 
     public static function delete($key = '')
     {
-        if (self::$_method === 'DELETE') {
+        if (self::$method === 'DELETE') {
             return self::getRaw($key);
         } else {
             return null;
@@ -72,7 +95,7 @@ class Input
 
     protected static function getRaw($key)
     {
-        if (empty($key)) return self::_clean(self::$_data);
-        return isset(self::$_data[$key]) ? self::_clean(self::$_data[$key]) : null;
+        if (empty($key)) return self::_clean(self::$data);
+        return isset(self::$data[$key]) ? self::_clean(self::$data[$key]) : null;
     }
 }

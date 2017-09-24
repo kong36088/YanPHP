@@ -22,11 +22,22 @@ set_error_handler('errorHandler');
  */
 \Yan\Core\Database::initialize();
 
+
 /**
  * router
  */
 \Yan\Core\Dispatcher::initialize();
 $dispatch = \Yan\Core\Dispatcher::dispatch();
+
+/**
+ * Validator
+ */
+\Yan\Core\Validator::initialize();
+
+/**
+ * Input
+ */
+\Yan\Core\Input::initialize();
 
 $controller = new $dispatch[0];
 $result = call_user_func([$controller, $dispatch[1]]);
@@ -36,4 +47,3 @@ if (!$result instanceof \Yan\Core\Compo\ResultInterface) {
 }
 
 showResult($result);
-//TODO 入参校验

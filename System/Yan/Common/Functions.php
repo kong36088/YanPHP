@@ -1,9 +1,11 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
+
 /**
  * YanPHP
  * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
+
 use Yan\Core\Log;
 use Yan\Core\ReturnCode;
 use Yan\Core\Exception;
@@ -236,4 +238,23 @@ if (!function_exists('show404')) {
         $result = genResult($code, $msg);
         showResult($result);
     }
+}
+
+if (!function_exists('getClassName')) {
+    /**
+     * 获取短类名
+     *
+     * @param object|string $classNameWithNamespace
+     * @return bool|string
+     */
+    function getClassName($classNameWithNamespace)
+    {
+        if (is_object($classNameWithNamespace)) {
+            return substr(strrchr(get_class($classNameWithNamespace), '\\'), 1);
+        } elseif (is_string($classNameWithNamespace)) {
+            return substr(strrchr($classNameWithNamespace, '\\'), 1);
+        }
+        return $classNameWithNamespace;
+    }
+
 }
