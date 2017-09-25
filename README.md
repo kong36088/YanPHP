@@ -11,6 +11,7 @@
 │   │   ├── Controller               --控制器，用于编写业务逻辑
 │   │   ├── Logs                     --日志存放
 │   │   ├── Model                    --模型层
+│   │   ├── Param                    --入参定义，以及参数校验
 │   │   └── Util                     --工具类库
 │   └── Server                     --分层应用根目录（这里是Server代码）
 │   │   ├── Cache                    --缓存
@@ -19,6 +20,7 @@
 │   │   ├── Controller               --控制器，用于编写业务逻辑
 │   │   ├── Logs                     --日志存放
 │   │   ├── Model                    --模型层
+│   │   ├── Param                    --入参定义，以及参数校验
 │   │   └── Util                     --工具类库
 ├── System                       --框架目录
 │   └── Yan
@@ -59,7 +61,7 @@ $config['route'] = [
 
 ```
 
-### 配置
+## 配置
 
 配置文件统一存放在 `Application/YourLevel/Config` 目录下
 `Application`下的各个文件夹对应着您应用的各个分层，每一层都采用自己独立的Config配置
@@ -123,3 +125,28 @@ $config['log_format'] = "[%datetime%]-%extra.process_id% %channel%.%level_name%:
 YanPHP内嵌的断言支持。感谢[beberlei/assert](https://github.com/beberlei/assert)提供类库支持
 
 详细的使用方法在这里：[YassertDocument](https://github.com/kong36088/YanPHP/tree/master/doc/YAssert.md)
+
+## 入参和Input
+
+### 用法介绍
+所有入参都需要定义在应用目录路径下的Param目录，并且可以对其进行相关的参数校验操作。
+
+下面我们会举例对该功能进行讲解。
+
+例如我们需要请求`UserController`的`index`方法，那么我们需要创建一个`入参配置文件` `/Param/UserController.ini`
+
+文件内容如下：
+```ini
+[index]
+user_id="starts_with[1]|required|numeric|between[1,123]"
+page="numeric"
+domain="string|numeric"
+arr="array"
+
+[getUser]
+
+```
+“=”号左边的是需要的入参，右边的是需要验证的规则。规则都是`Validator`内置好的，基于[Respect/Validation](https://github.com/Respect/Validation)开发
+并且只有被定义在`入参配置文件`中的参数才会被Input类所识别，其余参数一律丢弃。
+
+### 相关入参规则
