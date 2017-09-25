@@ -20,11 +20,9 @@ class Input
     public static function initialize()
     {
         self::$method = strtoupper($_SERVER['REQUEST_METHOD']);
-        parse_str(file_get_contents('php://input'),$input);
-        $input = array_merge($input,self::get());
-        $input = array_merge($input,self::post());
-
-
+        parse_str(file_get_contents('php://input'), $input);
+        $input = array_merge($input, self::get());
+        $input = array_merge($input, self::post());
 
         //根据Param/xxx.ini中配置的入参进行筛选
         $paramFile = BASE_PATH . '/Param/' . Dispatcher::$controllerShortName . '.ini';
@@ -37,13 +35,12 @@ class Input
         }
         //规则验证
         foreach ($paramRules as $key => $rule) {
-            $ret = Validator::validate($input[$key], $rule, $msg);
+            $ret = Validator::validate($key, $input[$key], $rule, $msg);
             if (!$ret) {
                 throwErr($msg, ReturnCode::INVALID_ARGUMENT, InvalidArgumentException::class);
             }
             self::$data[$key] = $input[$key];
         }
-
     }
 
     public static function get($key = '')
