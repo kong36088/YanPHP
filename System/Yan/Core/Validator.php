@@ -42,7 +42,8 @@ class Validator
             'between' => 'Between',
             'min' => 'min',
             'max' => 'max',
-            'length' => 'length'
+            'length' => 'length',
+            'equal' => 'Equals',
         );
 
     }
