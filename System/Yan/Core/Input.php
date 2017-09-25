@@ -29,13 +29,14 @@ class Input
         if (!file_exists($paramFile)) {
             throwErr("file {$paramFile} does not exist", ReturnCode::SYSTEM_ERROR, FileNotExistException::class);
         }
-        $paramRules = parse_ini_file($paramFile);
+        $paramRules = parse_ini_file($paramFile, true);
         if (!$paramRules) {
             throwErr("can not parse file {$paramFile}", ReturnCode::SYSTEM_ERROR, RuntimeException::class);
         }
         //规则验证
-        foreach ($paramRules as $key => $rule) {
-            $ret = Validator::validate($key, $input[$key], $rule, $msg);
+        foreach ($paramRules[Dispatcher::$method] ?: [] as $key => $rule) {
+            $value = $input[$key] ?? null;
+            $ret = Validator::validate($key, $value, $rule, $msg);
             if (!$ret) {
                 throwErr($msg, ReturnCode::INVALID_ARGUMENT, InvalidArgumentException::class);
             }

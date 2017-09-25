@@ -20,7 +20,6 @@ class Validator
 
     public static function initialize()
     {
-        //TODO test cases
         self::$rules = array(
             'required' => 'notOptional',
             'integer' => 'intType',

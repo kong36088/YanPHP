@@ -143,7 +143,7 @@ if (!function_exists('showResult')) {
      */
     function showResult(\Yan\Core\Compo\ResultInterface $result)
     {
-        Log::info($result->getMessage(), $result->jsonSerialize());
+        Log::info('response=' . $result->getMessage(), $result->jsonSerialize());
         exit(json_encode($result->jsonSerialize()));
     }
 }
