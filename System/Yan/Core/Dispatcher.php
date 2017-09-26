@@ -36,9 +36,9 @@ class Dispatcher
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
 
-        Log::debug('request uri=' . $uri . ' method=' . $httpMethod);
+        Log::info('request uri=' . $uri . ' method=' . $httpMethod);
 
-        $uri = substr($uri, strpos($uri, '/interface.php') + 14) ?? $uri;
+        $uri = substr($uri, strpos($uri, '/interface.php') + 14) ?: $uri;
 
         // Strip query string (?foo=bar) and decode URI
         if (false !== $pos = strpos($uri, '?')) {
