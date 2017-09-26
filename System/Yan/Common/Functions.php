@@ -123,12 +123,8 @@ if (!function_exists('exceptionHandler')) {
     function exceptionHandler($exception)
     {
         $code = $exception->getCode() == 0 ? ReturnCode::SYSTEM_ERROR : $exception->getCode();
-        \Yan\Core\Log::error($exception->getMessage(), [
-            'message' => $exception->getMessage(),
-            'code' => $code,
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine()
-        ]);
+
+        \Yan\Core\Log::error($exception->getMessage(), $exception->getTrace());
         $namespace = Config::get('namespace') ?: '\\Yan\\Core';
         $namespace .= '\\Compo\\Result';
         $result = new $namespace($code, $exception->getMessage());

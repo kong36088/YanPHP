@@ -10,12 +10,11 @@ namespace App\Cgi\Controller;
 
 
 use App\Cgi\Compo\Result;
-use App\Cgi\Model\User;
 use Yan\Core\Compo\ResultInterface;
 use Yan\Core\Controller;
 use Yan\Core\ReturnCode;
 
-class UserController extends Controller
+class TestController extends Controller
 {
 
     public function index(): ResultInterface
@@ -25,7 +24,6 @@ class UserController extends Controller
 
     public function getUser(): ResultInterface
     {
-        var_dump((new User())->getById(1));exit;
         return new Result(ReturnCode::OK, '', []);
     }
 }

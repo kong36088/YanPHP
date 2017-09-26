@@ -1,8 +1,10 @@
 <?php
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
- * LongPHP
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
+
 
 /**
  *  -------------------------------------------------------------

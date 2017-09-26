@@ -1,13 +1,9 @@
 <?php
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
- * Longphp
- * Author: William Jiang
+ * YanPHP
+ * User: weilongjiang(江炜隆)<willliam@jwlchina.cn>
  */
-/**
- * 配置默认控制器以及默认方法
- * 暂不支持路由修改功能
- */
-$config['default_method'] = 'index';
 
 $config['route'] = [
     '/' => [

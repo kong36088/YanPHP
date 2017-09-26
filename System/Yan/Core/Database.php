@@ -12,6 +12,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+//TODO multi connection
 class Database
 {
     public static function initialize()

@@ -19,23 +19,23 @@ class User extends Model
 
     protected $keyType = 'int';
 
-    public static function getById($id): Collection
+    public function getById($id): Collection
     {
-        return static::where($id)->get();
+        return $this->where([$this->primaryKey => $id])->get();
     }
 
-    public static function getByCond($cond): Collection
+    public function getByCond($cond): Collection
     {
-        return static::where($cond)->get();
+        return $this->where($cond)->get();
     }
 
-    public static function updateByCond($cond, $update): bool
+    public function updateByCond($cond, $update): bool
     {
-        return static::where($cond)->update($update);
+        return $this->where($cond)->update($update);
     }
 
-    public static function deleteById($id)
+    public function deleteById($id)
     {
-        return static::where($id)->delete();
+        return $this->where($id)->delete();
     }
 }
