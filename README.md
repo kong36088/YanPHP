@@ -158,41 +158,8 @@ arr="array"
 
 ## Database
 
-## Illuminate Database
-
 The Illuminate Database component is a full database toolkit for PHP, providing an expressive query builder, ActiveRecord style ORM, and schema builder. It currently supports MySQL, Postgres, SQL Server, and SQLite. It also serves as the database layer of the Laravel PHP framework.
 
-### Usage Instructions
-
-First, create a new "Capsule" manager instance. Capsule aims to make configuring the library for usage outside of the Laravel framework as easy as possible.
-
-```PHP
-use Illuminate\Database\Capsule\Manager as Capsule;
-
-$capsule = new Capsule;
-
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'database',
-    'username'  => 'root',
-    'password'  => 'password',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix'    => '',
-]);
-
-// Set the event dispatcher used by Eloquent models... (optional)
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
-$capsule->setEventDispatcher(new Dispatcher(new Container));
-
-// Make this Capsule instance available globally via static methods... (optional)
-$capsule->setAsGlobal();
-
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-$capsule->bootEloquent();
-```
 
 > `composer require "illuminate/events"` required when you need to use observers with Eloquent.
 
@@ -226,4 +193,44 @@ class User extends Illuminate\Database\Eloquent\Model {}
 $users = User::where('votes', '>', 1)->get();
 ```
 
-For further documentation on using the various database facilities this library provides, consult the [Laravel framework documentation](https://laravel.com/docs).
+或者使用YanPHP提供的风格
+```PHP
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+
+class User extends Model
+{
+    protected $table = 'user';
+
+    protected $primaryKey = 'uid';
+
+    protected $keyType = 'int';
+
+    public function getById($id): Collection
+    {
+        return $this->where([$this->primaryKey => $id])->get();
+    }
+
+    public function getByCond($cond): Collection
+    {
+        return $this->where($cond)->get();
+    }
+
+    public function updateByCond($cond, $update): bool
+    {
+        return $this->where($cond)->update($update);
+    }
+
+    public function deleteById($id)
+    {
+        return $this->where($id)->delete();
+    }
+}
+
+
+$UserModel = new User();
+$UserModel->getById(1); // 获取user表中uid为1的用户数据信息
+
+```
+
+For further documentation on using the various database facilities this library provides, consult the [Laravel database documentation](https://docs.golaravel.com/docs/5.4/database/).
