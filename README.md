@@ -153,7 +153,34 @@ arr="array"
 “=”号左边的是需要的入参，右边的是需要验证的规则。规则都是`Validator`内置好的，基于[Respect/Validation](https://github.com/Respect/Validation)开发
 并且只有被定义在`入参配置文件`中的参数才会被Input类所识别，其余参数一律丢弃。
 
+若参数不符合规则要求，则会直接返回错误信息。
+
+如若你需要为参数配置多个验证规则，可以用 `|` 进行规则分割，例子：`domain="string|length[1,20]"`。
+在这个例子中，我们要求domain必须是字符串类型，并且长度在1-20个字符之间。
+
+
 ### 相关入参规则
+
+|规则|参数|使用说明|例子|
+|:---:|:---:|:---:|:---:|
+|required|否|参数必填||
+|integer|否|整型||
+|numeric|否|所有字符都是数字（不区分变量类型）||
+|float|否|浮点型||
+|string|否|字符型||
+|array|否|数组型||
+|valid_ip|否|验证是否为一个有效的ip||
+|json|否|验证是否为合法json格式||
+|email|否|验证是否为合法邮箱||
+|domain|否|验证是否为合法域名||
+|regex|是|正则匹配|regex[/[0-9]+/]|
+|starts_with|是|是否以规定的字符开头|starts_with[ab]|
+|ends_with|是|是否以规定的字符结束|ends_with[ab]|
+|between|是|数值在定义的范围之间|between[1,100]|
+|min|是|定义最小不小于|min[1]|
+|max|是|定义最大不大于|max[100]|
+|length|是|定义字符串长度在定义范围内|length[1,100]|
+|equal|是|入参的值必须等于定义的值|equal[123]|
 
 
 ## Database
