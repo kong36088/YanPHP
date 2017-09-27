@@ -32,8 +32,7 @@ class Validator
             'json' => 'json',
             'email' => 'email',
             'domain' => 'domain',
-            'file' => 'file',
-            'regex' => 'regex',
+            //'file' => 'file',
 
             // params
             //'in_list' => v::contains([1,2]),
@@ -44,6 +43,7 @@ class Validator
             'max' => 'max',
             'length' => 'length',
             'equal' => 'Equals',
+            'regex' => 'regex',
         );
 
     }
