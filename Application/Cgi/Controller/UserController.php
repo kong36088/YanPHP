@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function getUser(): ResultInterface
     {
-        var_dump((new User())->getById(1));exit;
-        return new Result(ReturnCode::OK, '', []);
+        $userInfo = (new User())->getById(1);
+        return new Result(ReturnCode::OK, '', $userInfo->toArray());
     }
 }
