@@ -1,6 +1,23 @@
-[toc]
+- [YanPHP](#yanphp)
+    - [hello world](#hello-world)
+    - [路由](#路由)
+        - [默认路由规则](#默认路由规则)
+        - [自定义路由规则](#自定义路由规则)
+    - [配置](#配置)
+        - [系统配置相关](#系统配置相关)
+        - [日志配置相关](#日志配置相关)
+        - [database](#database)
+    - [YAssert](#yassert) 
+    - [入参和Input](#入参和input) 
+        - [用法介绍](#用法介绍)
+        - [相关入参规则](#相关入参规则)
+    - [Database](#database) 
+    - [Nginx](#nginx) 
+    - [Apache](#apache) 
+
 
 # YanPHP
+
 一个面向API的服务型框架
 
 目录结构
@@ -60,7 +77,7 @@ class HelloController extends Controller
 ``` ini
 [index]
 ```
-用命令行运行命令，重新加载composer中注册的命名空间：
+用命令行重新加载composer中注册的命名空间：
 ``` bash
 composer dump-autoload
 ```
@@ -310,7 +327,7 @@ $UserModel->getById(1); // 获取user表中uid为1的用户数据信息
 For further documentation on using the various database facilities this library provides, consult the [Laravel database documentation](https://docs.golaravel.com/docs/5.4/database/).
 
 
-## nginx
+## Nginx
 
 我们需要把每一层应用层作为你的根目录
 ``` bash
@@ -363,7 +380,7 @@ server
 }
 ```
 
-## apache
+## Apache
 
 如果你需要进行url重写，那么你需要开启 `rewrite module`。
 YanPHP已经为你编写好了 `.htaccess` 文件，并且存放在每一个应用层的目录下。
