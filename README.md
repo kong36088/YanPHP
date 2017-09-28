@@ -4,34 +4,75 @@
 目录结构
 ```
 ├── Application                  --你的代码目录
-│   ├── Cgi                        --分层应用根目录（这里是Cgi代码）
-│   │   ├── Cache                    --缓存
-│   │   ├── Compo                    --自定义组件
-│   │   ├── Config                   --配置
-│   │   ├── Controller               --控制器，用于编写业务逻辑
-│   │   ├── Logs                     --日志存放
-│   │   ├── Model                    --模型层
-│   │   ├── Param                    --入参定义，以及参数校验
-│   │   └── Util                     --工具类库
-│   └── Server                     --分层应用根目录（这里是Server代码）
-│   │   ├── Cache                    --缓存
-│   │   ├── Compo                    --自定义组件
-│   │   ├── Config                   --配置
-│   │   ├── Controller               --控制器，用于编写业务逻辑
-│   │   ├── Logs                     --日志存放
-│   │   ├── Model                    --模型层
-│   │   ├── Param                    --入参定义，以及参数校验
-│   │   └── Util                     --工具类库
+│   ├── Cgi                        --分层应用根目录（这里是Cgi代码）
+│   │   ├── Cache                    --缓存
+│   │   ├── Compo                    --自定义组件
+│   │   ├── Config                   --配置
+│   │   ├── Controller               --控制器，用于编写业务逻辑
+│   │   ├── Logs                     --日志存放
+│   │   ├── Model                    --模型层
+│   │   ├── Param                    --入参定义，以及参数校验
+│   │   └── Util                     --工具类库
+│   └── Server                     --分层应用根目录（这里是Server代码）
+│   │   ├── Cache                    --缓存
+│   │   ├── Compo                    --自定义组件
+│   │   ├── Config                   --配置
+│   │   ├── Controller               --控制器，用于编写业务逻辑
+│   │   ├── Logs                     --日志存放
+│   │   ├── Model                    --模型层
+│   │   ├── Param                    --入参定义，以及参数校验
+│   │   └── Util                     --工具类库
 ├── System                       --框架目录
-│   └── Yan
-│       ├── Common
-│       └── Core
-│           ├── Compo
-│           └── Exception
+│   └── Yan
+│       ├── Common
+│       └── Core
+│           ├── Compo
+│           └── Exception
 
 ```
 
 ## hello world
+
+来编写我们的第一个hello world
+
+首先我们需要先新增一个控制器
+新建一个控制器文件 `Application/Cgi/Controller/HelloController.php`
+``` php
+<?php
+namespace App\Cgi\Controller;
+
+use Yan\Core\Compo\ResultInterface;
+use Yan\Core\Controller;
+
+class HelloController extends Controller
+{
+
+    public function index(): ResultInterface
+    {
+        return $this->succ('hello world');
+    }
+}
+```
+紧接着到`Param`目录下创建我们的控制器入参规则，
+`Application/Cgi/Param/HelloController.ini`内容如下：
+``` ini
+[index]
+```
+用命令行重新加载composer中注册的命名空间：
+``` bash
+composer dump-autoload
+```
+
+最后，用浏览器访问我们刚才编写的hello world：`http://localhost/interface.php/hello/index`
+
+返回结果为以下内容
+``` json
+{
+    "code": 0,
+    "message": "hello world",
+    "data": []
+}
+```
 
 若有新增类库文件，**记得一定要运行一次 `composer dump-autoload` 以重新加载命名空间**
 
@@ -70,9 +111,13 @@ $config['route'] = [
 配置文件统一存放在 `Application/YourLevel/Config` 目录下
 `Application`下的各个文件夹对应着您应用的各个分层，每一层都采用自己独立的Config配置
 
-#### config
+#### 系统配置相关
+``` php
+$config['namespace'] = 'App\\Cgi';
+```
+这里用于配置你的应用层采用的命名空间，在新添加应用层后请勿忘记修改这里的配置哦。
 
-日志配置相关
+#### 日志配置相关
 
 几种日志等级。比如日志等级配置为`INFO`，则INFO及INFO以上的（NOTICE、WARING、ERROR）等等级的日志将会被记录。
 ```
@@ -137,7 +182,7 @@ YanPHP内嵌的断言支持。感谢[beberlei/assert](https://github.com/beberle
 
 下面我们会举例对该功能进行讲解。
 
-例如我们需要请求`UserController`的`index`方法，那么我们需要创建一个`入参配置文件` `/Param/UserController.ini`
+例如我们需要请求`UserController`的`index`方法，那么我们需要创建一个`入参配置文件` `Param/UserController.ini`
 
 文件内容如下：
 ```ini
@@ -261,3 +306,88 @@ $UserModel->getById(1); // 获取user表中uid为1的用户数据信息
 ```
 
 For further documentation on using the various database facilities this library provides, consult the [Laravel database documentation](https://docs.golaravel.com/docs/5.4/database/).
+
+
+## nginx
+
+我们需要把每一层应用层作为你的根目录
+``` bash
+# 这里是你的Cgi层
+server 
+{
+    listen       80;
+    server_name  cgi.example.com;
+    index index.shtml index.html index.htm interface.php;
+    root  root  /path/to/root/YanPHP/Application/Cgi/;
+     location / {
+        try_files $uri $uri/ =404;
+        if (!-e $request_filename)
+        {
+            rewrite (.*) /interface.php;
+        }
+    }
+    location ~ .*\.(php|php5)?$
+    {
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+    access_log  /var/log/YanPHP/access.log;
+    error_log   /var/log/YanPHP/error.log;
+}
+
+# 这里是你的Server层
+server 
+{
+    listen       80;
+    server_name  server.example.com;
+    index index.shtml index.html index.htm interface.php;
+    root  root  /path/to/root/YanPHP/Application/Server/;
+     location / {
+        try_files $uri $uri/ =404;
+        if (!-e $request_filename)
+        {
+            rewrite (.*) /interface.php;
+        }
+    }
+    location ~ .*\.(php|php5)?$
+    {
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+    access_log  /var/log/YanPHP/access.log;
+    error_log   /var/log/YanPHP/error.log;
+}
+```
+
+## apache
+
+如果你需要进行url重写，那么你需要开启 `rewrite module`。
+YanPHP已经为你编写好了 `.htaccess` 文件，并且存放在每一个应用层的目录下。
+
+``` apacheconfig
+<VirtualHost *:80>
+    DocumentRoot "/path/to/root/YanPHP/Application/Cgi/;"
+    ServerName cgi.example.com
+    AddType application/x-httpd-php .php
+    <Directory />
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+        DirectoryIndex interface.php
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot "/path/to/root/YanPHP/Application/Server/;"
+    ServerName server.example.com
+    AddType application/x-httpd-php .php
+    <Directory />
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+        DirectoryIndex interface.php
+    </Directory>
+</VirtualHost>
+```
