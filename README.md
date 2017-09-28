@@ -1,3 +1,5 @@
+[toc]
+
 # YanPHP
 一个面向API的服务型框架
 
@@ -58,7 +60,7 @@ class HelloController extends Controller
 ``` ini
 [index]
 ```
-用命令行重新加载composer中注册的命名空间：
+用命令行运行命令，重新加载composer中注册的命名空间：
 ``` bash
 composer dump-autoload
 ```
