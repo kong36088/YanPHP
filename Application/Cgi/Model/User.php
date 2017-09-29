@@ -8,8 +8,8 @@
 
 namespace App\Cgi\Model;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Yan\Core\Model;
 
 class User extends Model
 {
