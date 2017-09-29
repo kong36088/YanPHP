@@ -16,6 +16,10 @@ Yan\Core\Log::initialize();
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 
+/**
+ * Session
+ */
+\Yan\Core\Session::initialize();
 
 /**
  * database

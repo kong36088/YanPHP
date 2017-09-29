@@ -14,6 +14,7 @@ use App\Cgi\Model\User;
 use Yan\Core\Compo\ResultInterface;
 use Yan\Core\Controller;
 use Yan\Core\ReturnCode;
+use Yan\Core\Session;
 
 class UserController extends Controller
 {
@@ -27,5 +28,11 @@ class UserController extends Controller
     {
         $userInfo = (new User())->getById(1);
         return new Result(ReturnCode::OK, '', $userInfo->toArray());
+    }
+
+    public function session()
+    {
+        Session::$segment->set('a','b');
+        var_dump(Session::get('a'));exit;
     }
 }

@@ -1,9 +1,9 @@
 .idea/*
 /vendor/
-cache/*
+Application/*/Cache/*
 composer.lock
 Application/*/logs/*.log
 
-!cache/index.html
+!cache/*index.html
 !Application/logs/index.html
 !Framework/index.html

@@ -47,14 +47,9 @@ $config['log_format'] = "[%datetime%]-%extra.process_id% %channel%.%level_name%:
  * |Session config                                               |
  *  -------------------------------------------------------------
  *
- * Configuring session driver
- *
- * Alternative: file database
  */
-$config['session_driver'] = 'file';
 /**
  * session_path leave blank to use default
  */
 $config['session_path'] = BASE_PATH.'/Cache/session';
-$config['session_cookie_name'] = 'LONG_SESSION';
-$config['session_expiration'] = 7200;
+$config['session_name'] = 'YAN_SESSION';
