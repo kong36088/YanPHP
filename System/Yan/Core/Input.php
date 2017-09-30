@@ -21,8 +21,8 @@ class Input
     {
         self::$method = strtoupper($_SERVER['REQUEST_METHOD']);
         parse_str(file_get_contents('php://input'), $input);
-        $input = array_merge($input, self::get());
-        $input = array_merge($input, self::post());
+        $input = array_merge($input, $_GET);
+        $input = array_merge($input, $_POST);
 
         //根据Param/xxx.ini中配置的入参进行筛选
         $paramFile = BASE_PATH . '/Param/' . Dispatcher::$controllerShortName . '.ini';
@@ -46,10 +46,16 @@ class Input
 
     public static function get($key = '')
     {
-        if (empty($key)) return self::_clean($_GET);
-        return isset($_GET[$key]) ? self::_clean($_GET[$key]) : null;
+        if (empty($key)) return self::_clean(self::$data);
+        return isset(self::$data[$key]) ? self::_clean(self::$data[$key]) : null;
     }
 
+    public static function set($key,$value)
+    {
+        self::$data[$key] = $value;
+    }
+
+    /*
     public static function post($key = '')
     {
         if (empty($key)) return self::_clean($_POST);
@@ -78,6 +84,7 @@ class Input
     {
         return self::getRaw($key);
     }
+    */
 
     protected static function _clean($data)
     {

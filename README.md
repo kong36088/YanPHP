@@ -13,7 +13,9 @@
     - [入参和Input](#入参和input) 
         - [用法介绍](#用法介绍)
         - [相关入参规则](#相关入参规则)
+        - [获取输入参数](#获取输入参数)
     - [Database](#database) 
+    - [Session](#session) 
     - [Nginx](#nginx) 
     - [Apache](#apache) 
 
@@ -138,6 +140,13 @@ $config['namespace'] = 'App\\Cgi';
 ```
 这里用于配置你的应用层采用的命名空间，在新添加应用层后请勿忘记修改这里的配置哦。
 
+``` php
+$config['session_path'] = BASE_PATH.'/Cache/session';
+$config['session_name'] = 'YAN_SESSION';
+```
+`session_path` 用于配置session存放的僦
+`session_name` 用于配置session名称，即用于标识用户session id的key值
+
 #### 日志配置相关
 
 几种日志等级。比如日志等级配置为`INFO`，则INFO及INFO以上的（NOTICE、WARING、ERROR）等等级的日志将会被记录。
@@ -248,6 +257,13 @@ arr="array"
 |length|是|定义字符串长度在定义范围内|length[1,100]|
 |equal|是|入参的值必须等于定义的值|equal[123]|
 
+### 获取输入参数
+
+```php 
+Input::get('user_id'); //获取参数user_id
+
+Input::set('user_id',1); //设置参数
+```
 
 ## Database
 
@@ -328,6 +344,35 @@ $UserModel->getById(1); // 获取user表中uid为1的用户数据信息
 
 For further documentation on using the various database facilities this library provides, consult the [Laravel database documentation](https://docs.golaravel.com/docs/5.4/database/).
 
+## Session
+
+用法示例
+``` php
+use Yan\Core\Session;
+
+Session::set('a','b');  //设置session值
+
+$sessionVaue = Session::get('a');  //获取session中的值
+
+Session::destroy(); //销毁所有session
+```
+
+Session类中有以下方法
+``` php
+/**
+ * @method static mixed get($key, $alt = null)
+ * @method static mixed set($key, $val)
+ * @method static null clear()
+ * @method static mixed getFlash($key, $alt = null)
+ * @method static null setFlash($key, $val)
+ * @method static null clearFlash()
+ * @method static mixed getFlashNext($key, $alt = null)
+ * @method static null setFlashNow($key, $val)
+ * @method static null clearFlashNow()
+ * @method static null keepFlash()
+ * @method boo null destroy()
+ */
+```
 
 ## Nginx
 

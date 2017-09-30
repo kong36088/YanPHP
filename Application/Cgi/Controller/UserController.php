@@ -13,6 +13,7 @@ use App\Cgi\Compo\Result;
 use App\Cgi\Model\User;
 use Yan\Core\Compo\ResultInterface;
 use Yan\Core\Controller;
+use Yan\Core\Input;
 use Yan\Core\ReturnCode;
 use Yan\Core\Session;
 
@@ -32,7 +33,8 @@ class UserController extends Controller
 
     public function session()
     {
-        Session::$segment->set('a','b');
+        //Session::destroy();
+        Session::set('a','b');
         var_dump(Session::get('a'));exit;
     }
 }
