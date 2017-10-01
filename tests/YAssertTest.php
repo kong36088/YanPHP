@@ -8,7 +8,6 @@
 namespace TestNamespace;
 
 use PHPUnit\Framework\TestCase;
-use Yan\Core\Exception\YAssertionFailedException;
 use Yan\Core\YAssert;
 
 class YAssertTest extends TestCase
@@ -21,7 +20,7 @@ class YAssertTest extends TestCase
     public function testAllTrue()
     {
         $this->assertTrue(YAssert::allTrue([true, 'a' => true]));
-        $this->assertTrue(YAssert::allTrue(true));
+        $this->assertTrue(YAssert::true(true));
     }
 
     public function testEq(){
@@ -33,10 +32,26 @@ class YAssertTest extends TestCase
     }
 
     /**
-     * @expectedException YAssertionFailedException
+     * @expectedException \Yan\Core\Exception\YAssertionFailedException
      */
     public function testException()
     {
-        $this->assertTrue(YAssert::allTrue(1 == 2));
+        $this->assertTrue(YAssert::true(1 == 2));
+    }
+
+    public function testBetween(){
+        $this->assertTrue(YAssert::between(1,-1,100));
+    }
+
+    public function testAllBetween(){
+        $this->assertTrue(YAssert::allBetween([1,2,3,4,-1,100],-1,100));
+    }
+
+    public function testBetweenLength(){
+        $this->assertTrue(YAssert::betweenLength('abcd',1,4));
+    }
+
+    public function testIp(){
+        $this->assertTrue(YAssert::ip('111.111.111.111'));
     }
 }
