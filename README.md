@@ -160,6 +160,7 @@ $config['session_name'] = 'YAN_SESSION';
 'CRITICAL'
 'ALERT'
 'EMERGENCY'
+*/
 
 $config['log_level'] = 'DEBUG';
 ```
