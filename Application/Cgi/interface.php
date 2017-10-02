@@ -27,6 +27,4 @@ defined('BASE_PATH') or define('BASE_PATH', dirname(__FILE__));
 defined('CACHE_PATH') or define('CACHE_PATH', $cachePath);
 
 
-require "../../vendor/autoload.php";
-
-require "../../System/yan.php";
+require_once "../../System/yan.php";

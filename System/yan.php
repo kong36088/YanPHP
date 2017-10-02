@@ -6,8 +6,11 @@
  */
 defined('YAN_VERSION') or define('YAN_VERSION', '0.1');
 
+$dirname = dirname(__FILE__);
+require_once $dirname."/../vendor/autoload.php";
 
-require_once "Yan/Common/Functions.php";
+require_once $dirname."/Yan/Common/Functions.php";
+
 
 Yan\Core\Config::initialize();
 
