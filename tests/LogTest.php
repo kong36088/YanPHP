@@ -7,38 +7,41 @@
 
 namespace TestNamespace;
 
-use PHPUnit\Framework\TestCase;
+use Yan\Core\Config;
 use Yan\Core\Log;
 
-class LogTest extends TestCase
+class LogTest extends BaseTestCase
 {
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+
+        Config::initialize();
+        Log::initialize();
+    }
+
     public function testLog()
     {
-        Log::log('INFO', 'log test message');
-        $this->assertTrue(true);
+        $this->assertTrue(Log::log('INFO', 'log test message'));
     }
 
     public function testDebug()
     {
-        Log::debug('debug test message');
-        $this->assertTrue(true);
+        $this->assertTrue(Log::debug('debug test message'));
     }
 
     public function testInfo()
     {
-        Log::debug('info test message');
-        $this->assertTrue(true);
+        $this->assertTrue(Log::debug('info test message'));
     }
 
     public function testWarning()
     {
-        Log::debug('warning test message');
-        $this->assertTrue(true);
+        $this->assertTrue(Log::debug('warning test message'));
     }
 
     public function testError()
     {
-        Log::debug('error test message');
-        $this->assertTrue(true);
+        $this->assertTrue(Log::debug('error test message'));
     }
 }

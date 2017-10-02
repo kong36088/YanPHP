@@ -1,7 +1,10 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="System">
+        <testsuite name="YAssert">
             <file>tests/YAssertTest.php</file>
+        </testsuite>
+        <testsuite name="Log">
+            <file>tests/LogTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
