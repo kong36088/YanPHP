@@ -42,14 +42,7 @@ class Controller
 
     public function __construct()
     {
-        self::$_instance = &$this;
-
         Log::debug('Init Controller ' . static::class);
-    }
-
-    public static function &getInstance()
-    {
-        return self::$_instance;
     }
 
 

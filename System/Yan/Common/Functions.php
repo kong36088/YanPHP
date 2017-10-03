@@ -154,22 +154,6 @@ if (!function_exists('throwErr')) {
     }
 }
 
-
-if (!function_exists('getInstance')) {
-    /**
-     * Reference to the Controller method.
-     *
-     * Returns current Long instance object
-     *
-     * @return \Yan\Core\Controller
-     */
-    function &getInstance()
-    {
-        return \Yan\Core\Controller::getInstance();
-    }
-}
-
-
 if (!function_exists('isPHP')) {
     /**
      * Determines if the current version of PHP is equal to or greater than the supplied value
@@ -199,20 +183,10 @@ if (!function_exists('input')) {
      */
     function input($key = '')
     {
-        $keyArr = explode('.', $key);
-        $keyArr[1] = $keyArr ?: '';
-        switch (strtoupper($keyArr[0])) {
-            case 'GET':
-                return Yan\Core\Input::get($keyArr[1]);
-            case 'POST':
-                return Yan\Core\Input::post($keyArr[1]);
-            case 'DELETE':
-                return Yan\Core\Input::delete($keyArr[1]);
-            case 'PUT':
-                return Yan\Core\Input::put($keyArr[1]);
-            default:
-                return Yan\Core\Input::input($keyArr[1]);
-        }
+        $key = $key ?: '';
+
+        return Yan\Core\Input::get($key);
+
     }
 }
 
