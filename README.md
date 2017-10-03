@@ -17,7 +17,9 @@
     - [Database](#database) 
     - [Session](#session) 
     - [Nginx](#nginx) 
-    - [Apache](#apache) 
+    - [Apache](#apache)
+    - [Tests](#tests)
+    - [License](#license)
 
 
 # Documentation
@@ -458,3 +460,14 @@ YanPHP已经为你编写好了 `.htaccess` 文件，并且存放在每一个应�
     </Directory>
 </VirtualHost>
 ```
+
+## Tests
+
+YanPHP编写了相关的测试用例，可以通过运行一下命令进行单元测试，同时也欢迎提交pull request进行测试用例的补充。
+``` bash
+phpunit --configuration phpunit.xml
+```
+
+## License
+
+MIT

@@ -7,18 +7,35 @@
 
 namespace TestNamespace;
 
-use PHPUnit\Framework\TestCase;
-use Yan\Core\Controller;
+use Yan\Core\Compo\ResultInterface;
+use Yan\Core\Exception\RuntimeException;
+use Yan\Core\Exception\YanExceptionInterface;
 
-class FunctionTest extends TestCase
+class FunctionTest extends BaseTestCase
 {
-    function testIsCli(){
+    function testIsCli()
+    {
         $this->assertTrue(isCli());
     }
 
-    function testGetInstance(){
-        $c = getInstance();
-        $this->assertNotEmpty($c);
-        $this->assertTrue($c instanceof Controller);
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionCode -1
+     * @expectedExceptionMessage error message
+     */
+    function testThrowErr()
+    {
+        throwErr('error message', -1, RuntimeException::class);
     }
+
+    function testGenResult()
+    {
+        $this->assertInstanceOf(ResultInterface::class, genResult(1, 'test message', []));
+    }
+
+    function testGetClassName(){
+        $this->assertEquals('ResultInterface',getClassName(ResultInterface::class));
+    }
+
+
 }
