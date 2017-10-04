@@ -9,6 +9,9 @@
         <testsuite name="Function">
             <file>tests/FunctionTest.php</file>
         </testsuite>
+        <testsuite name="Validator">
+            <file>tests/ValidatorTest.php</file>
+        </testsuite>
     </testsuites>
     <listeners>
         <listener class="TestNamespace\TestListener" file="tests/TestListener.php"></listener>
