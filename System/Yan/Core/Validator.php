@@ -28,7 +28,7 @@ class Validator
             'float' => 'floatType',
             'string' => 'stringType',
             'array' => 'arrayType',
-            'valid_ip' => 'ip',
+            'ip' => 'ip',
             'json' => 'json',
             'email' => 'email',
             'domain' => 'domain',
@@ -57,7 +57,7 @@ class Validator
      * @param string $resultMsg 验证结果信息
      * @return bool
      */
-    public static function validate($paramName, $input, string $rules, &$resultMsg): bool
+    public static function validate($paramName, $input, string $rules, &$resultMsg = null): bool
     {
         $rulesArr = explode('|', $rules);
         //遍历所有用户定义的规则

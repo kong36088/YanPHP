@@ -247,7 +247,7 @@ arr="array"
 |float|否|浮点型||
 |string|否|字符型||
 |array|否|数组型||
-|valid_ip|否|验证是否为一个有效的ip||
+|ip|否|验证是否为一个有效的ip||
 |json|否|验证是否为合法json格式||
 |email|否|验证是否为合法邮箱||
 |domain|否|验证是否为合法域名||
