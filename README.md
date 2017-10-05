@@ -9,13 +9,16 @@
         - [系统配置相关](#系统配置相关)
         - [日志配置相关](#日志配置相关)
         - [database](#database)
-    - [YAssert](#yassert) 
-    - [入参和Input](#入参和input) 
+    - [YAssert](#yassert)
+    - [入参和Input](#入参和input)
         - [用法介绍](#用法介绍)
         - [相关入参规则](#相关入参规则)
         - [获取输入参数](#获取输入参数)
-    - [Database](#database) 
-    - [Session](#session) 
+    - [Database](#database)
+    - [Session](#session)
+    - [定制化](#定制化)
+        - [定制Result格式](#定制Result格式)
+        - [定制ReturnCode](#定制ReturnCode)
     - [Nginx](#nginx) 
     - [Apache](#apache)
     - [Tests](#tests)
@@ -376,6 +379,59 @@ Session类中有以下方法
  * @method boo null destroy()
  */
 ```
+
+## 定制化
+### 定制Result格式
+
+可以到你的应用目录下的`Compo/Result.php`定制化你的Result格式
+
+下面是Result类的示例：
+``` php
+namespace App\Cgi\Compo;
+
+use Yan\Core\Compo\ResultInterface;
+
+class Result implements ResultInterface
+{
+    protected $code;
+    protected $message;
+    protected $data;
+
+    public function __construct(int $code, string $message, array $data = [])
+    {
+        $this->code = $code;
+        $this->message = $message;
+        $this->data = $data;
+    }
+
+    function getCode(): int
+    {
+        return $this->code;
+    }
+
+    function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return ['code' => $this->code, 'message' => $this->message, 'data' => $this->data];
+    }
+}
+```
+`jsonSerialize()`返回一个数组，作为结果输出
+
+### 定制ReturnCode
+
+YanPHP为你定义了一个全局的返回码，返回码的修改可以到`System/Yan/Core/ReturnCode.php`修改
 
 ## Nginx
 
