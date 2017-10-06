@@ -9,6 +9,7 @@
 namespace Yan\Core;
 
 
+use Aura\Session\CsrfToken;
 use Aura\Session\SessionFactory;
 
 /**
@@ -30,7 +31,7 @@ class Session
     /** @var  \Aura\Session\Session */
     protected static $session;
     /** @var  \Aura\Session\Segment */
-    public static $segment;
+    protected static $segment;
 
     public static function initialize()
     {
@@ -53,6 +54,11 @@ class Session
         return static::$session->commit();
     }
 
+    public static function regenerateId(): bool
+    {
+        return static::$session->regenerateId();
+    }
+
     /**
      *
      * Destroys the session entirely.
@@ -65,6 +71,11 @@ class Session
     public static function destroy(): bool
     {
         return static::$session->destroy();
+    }
+
+    public static function getCsrfToken(): CsrfToken
+    {
+        return static::$session->getCsrfToken();
     }
 
 

@@ -19,11 +19,14 @@
     - [定制化](#定制化)
         - [定制Result格式](#定制Result格式)
         - [定制ReturnCode](#定制ReturnCode)
+    - [安全](#安全)
+        - [重新生成Session ID](#重新生成Session ID)
+        - [CSRF防御措施](#CSRF防御措施)
     - [Nginx](#nginx) 
     - [Apache](#apache)
     - [Tests](#tests)
     - [License](#license)
-
+    
 
 # Documentation
 
@@ -432,6 +435,76 @@ class Result implements ResultInterface
 ### 定制ReturnCode
 
 YanPHP为你定义了一个全局的返回码，返回码的修改可以到`System/Yan/Core/ReturnCode.php`修改
+
+## 安全
+
+### 重新生成Session ID
+
+Any time a user has a change in privilege (that is, gaining or losing access
+rights within a system) be sure to regenerate the session ID:
+
+```php
+<?php
+\Yan\Core\Session::regenerateId();
+?>
+```
+
+> N.b.: The `regenerateId()` method also regenerates the CSRF token value.
+
+### Cross-Site Request Forgery
+
+CSRF（Cross-site request forgery）跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。
+尽管听起来像跨站脚本（XSS），但它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。
+
+<http://en.wikipedia.org/wiki/Cross-site_request_forgery>
+
+#### CSRF防御措施
+
+为了防范Csrf攻击，server端的处理逻辑应该是这样的：
+
+1. 为每一个已经登陆了的用户的每个表单请求放置一个验证token；
+
+
+2. 确保所有通过 POST/PUT/DELETE (i.e., "unsafe") 的请求都包含上一步骤提到的token值。
+
+> N.b.: 如果我们的应用是通过GET请求方法去修改应用资源 (这
+> 是一个错误的做法), 我们同样应该对GET方法的请求
+> 进行CSRF token的验证，以确保用户资源的安全。
+
+例如，我们想要生成一个CSRF token，可以参考以下做法
+
+```php
+<?php
+\Yan\Core\Session::getCsrfToken()->getValue();
+```
+
+当server端接收到一个请求时，我们应该对CSRF token进行以下的处理:
+
+```php
+<?php
+use Yan\Core\Session;
+use \Yan\Core\Input;
+
+/**
+ * @var Vendor\Package\User $user A user-authentication object.
+ */
+$unsafe = $_SERVER['REQUEST_METHOD'] == 'POST'
+       || $_SERVER['REQUEST_METHOD'] == 'PUT'
+       || $_SERVER['REQUEST_METHOD'] == 'DELETE';
+
+if ($unsafe && $user->auth->isValid()) {
+    $csrf_value = Input::get('__csrf_value');
+    $csrf_token = Session::getCsrfToken();
+    if (! $csrf_token->isValid($csrf_value)) {
+        echo "This looks like a cross-site request forgery.";
+    } else {
+        echo "This looks like a valid request.";
+    }
+} else {
+    echo "CSRF attacks only affect unsafe requests by authenticated users.";
+}
+?>
+```
 
 ## Nginx
 
