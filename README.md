@@ -18,9 +18,9 @@
     - [Session](#session)
     - [定制化](#定制化)
         - [定制Result格式](#定制result格式)
-        - [定制ReturnCode](#定制resultcode)
+        - [定制ReturnCode](#定制returncode)
     - [安全](#安全)
-        - [重新生成Session ID](#重新生成session id)
+        - [重新生成SessionID](#重新生成sessionid)
         - [CSRF防御措施](#csrf防御措施)
     - [Nginx](#nginx) 
     - [Apache](#apache)
@@ -438,7 +438,7 @@ YanPHP为你定义了一个全局的返回码，返回码的修改可以到`Syst
 
 ## 安全
 
-### 重新生成Session ID
+### 重新生成SessionID
 
 Any time a user has a change in privilege (that is, gaining or losing access
 rights within a system) be sure to regenerate the session ID:
