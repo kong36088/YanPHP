@@ -37,4 +37,9 @@ class UserController extends Controller
         Session::set('a','b');
         var_dump(Session::get('a'));exit;
     }
+
+    public function csrf(){
+        $token = Session::getCsrfToken();
+        return $this->succ('',['token'=>$token->getValue()]);
+    }
 }
