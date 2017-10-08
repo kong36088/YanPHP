@@ -23,10 +23,10 @@ $config['db_user'] = 'root';
 $config['db_password'] = 'root';
 
 /** 端口 */
-$config['db_port'] = 3308;
+$config['db_port'] = 3306;
 
 /** 数据库 */
-$config['db_database'] = 'yan';
+$config['db_database'] = '';
 
 /** 表名前缀 */
 $config['db_prefix'] = '';

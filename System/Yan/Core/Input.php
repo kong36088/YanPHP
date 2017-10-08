@@ -11,6 +11,7 @@ use Yan\Core\Exception\FileNotExistException;
 use Yan\Core\Exception\InvalidArgumentException;
 use Yan\Core\Exception\RuntimeException;
 
+//TODO 优化
 class Input
 {
     protected static $data = array();
