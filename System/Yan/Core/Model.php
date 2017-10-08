@@ -11,5 +11,19 @@ namespace Yan\Core;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
+    /** @var string model关联的表名 */
+    protected $table;
 
+    /** @var string 主键 */
+    protected $primaryKey = 'id';
+
+    /** @var string 主键类型 */
+    protected $keyType = 'int';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        Log::debug('Init Model ' . static::class);
+    }
 }

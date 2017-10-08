@@ -4,7 +4,7 @@
  * Date: 2017/8/23
  * Time: 17:54
  */
-defined('YAN_VERSION') or define('YAN_VERSION', '0.1');
+defined('YAN_VERSION') or define('YAN_VERSION', '0.2');
 
 $dirname = dirname(__FILE__);
 require_once $dirname."/../vendor/autoload.php";
