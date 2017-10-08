@@ -82,9 +82,9 @@ class Session
     public static function __callStatic($name, $arguments)
     {
         //立即刷数据到磁盘
-        static::$session->start();
+        static::start();
         $ret = call_user_func_array([static::$segment, $name], $arguments);
-        static::$session->commit();
+        static::commit();
         return $ret;
     }
 }
