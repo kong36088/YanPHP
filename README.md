@@ -1,3 +1,6 @@
+# YanPHP V0.2
+[Release Note](https://github.com/kong36088/YanPHP/tree/master/doc/Release.md)
+
 # Guide
 
 - [Documentation](#documentation)
@@ -259,6 +262,7 @@ arr="array"
 |规则|参数|使用说明|例子|
 |:---:|:---:|:---:|:---:|
 |required|否|参数必填||
+|optional|否|参数可空||
 |integer|否|整型||
 |numeric|否|所有字符都是数字（不区分变量类型）||
 |float|否|浮点型||
@@ -268,14 +272,15 @@ arr="array"
 |json|否|验证是否为合法json格式||
 |email|否|验证是否为合法邮箱||
 |domain|否|验证是否为合法域名||
-|regex|是|正则匹配|regex[/[0-9]+/]|
-|starts_with|是|是否以规定的字符开头|starts_with[ab]|
-|ends_with|是|是否以规定的字符结束|ends_with[ab]|
-|between|是|数值在定义的范围之间|between[1,100]|
-|min|是|定义最小不小于|min[1]|
-|max|是|定义最大不大于|max[100]|
-|length|是|定义字符串长度在定义范围内|length[1,100]|
-|equal|是|入参的值必须等于定义的值|equal[123]|
+|regex|是|正则匹配|regex(/[0-9]+/)|
+|starts_with|是|是否以规定的字符开头|starts_with(ab)|
+|ends_with|是|是否以规定的字符结束|ends_with(ab)|
+|between|是|数值在定义的范围之间|between(1,100)|
+|min|是|定义最小不小于|min(1)|
+|max|是|定义最大不大于|max(100)|
+|length|是|定义字符串长度在定义范围内|length(1,100)|
+|equal|是|入参的值必须等于定义的值|equal(123)|
+|contain|是|入参是否包含给出的值|contain([ab])|
 
 ### 获取输入参数
 
