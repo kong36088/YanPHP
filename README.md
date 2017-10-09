@@ -110,7 +110,7 @@ composer dump-autoload
 }
 ```
 
-若有新增类库文件，**记得一定要运行一次 `composer dump-autoload` 以重新加载命名空间**
+若有新增类库文件，**记得一定要运行一次 `composer dump-autoload` 以刷新我们的autoloader**
 
 ## 路由
 
