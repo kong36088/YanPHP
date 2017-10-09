@@ -14,7 +14,7 @@ class Result implements ResultInterface
     protected $message;
     protected $data;
 
-    public function __construct(int $code, string $message, array $data = [])
+    public function __construct(int $code = 0, string $message = '', array $data = [])
     {
         $this->code = $code;
         $this->message = $message;
