@@ -69,6 +69,11 @@
 
 ## hello world
 
+首先安装YanPHP的依赖项：
+```php
+composer install
+```
+
 来编写我们的第一个hello world
 
 首先我们需要先新增一个控制器
