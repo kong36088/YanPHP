@@ -108,7 +108,7 @@ if (!function_exists('errorHandler')) {
         if ($is_error) {
             $namespace = Config::get('namespace') ?: '\\Yan\\Core';
             $namespace .= '\\Compo\\Result';
-            $result = new $namespace();
+            $result = new $namespace(ReturnCode::SYSTEM_ERROR, $errMsg);
             showResult($result);
         }
 
@@ -122,7 +122,9 @@ if (!function_exists('exceptionHandler')) {
      */
     function exceptionHandler($exception)
     {
-        $code = $exception->getCode() == 0 ? ReturnCode::SYSTEM_ERROR : $exception->getCode();
+        //TODO handle db exception
+        $code = $exception->getCode() == 0 || !is_numeric($exception->getCode()) ? ReturnCode::SYSTEM_ERROR : $exception->getCode();
+        $code = intval($code);
 
         \Yan\Core\Log::error($exception->getMessage(), $exception->getTrace());
         $namespace = Config::get('namespace') ?: '\\Yan\\Core';
