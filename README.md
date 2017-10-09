@@ -19,6 +19,7 @@
     - [定制化](#定制化)
         - [定制Result格式](#定制result格式)
         - [定制ReturnCode](#定制returncode)
+    - [YanPHP命名规范准则](#yanphp命名规范准则)
     - [安全](#安全)
         - [重新生成SessionID](#重新生成sessionid)
         - [CSRF防御措施](#csrf防御措施)
@@ -445,6 +446,32 @@ class Result implements ResultInterface
 ### 定制ReturnCode
 
 YanPHP为你定义了一个全局的返回码，返回码的修改可以到`System/Yan/Core/ReturnCode.php`修改
+
+## YanPHP命名规范准则
+
+YanPHP的所有的类文件文件名都 **必须** 与类名保持一致
+
+框架的命名方式应该遵循[驼峰命名法](https://zh.wikipedia.org/zh-cn/%E9%A7%9D%E5%B3%B0%E5%BC%8F%E5%A4%A7%E5%B0%8F%E5%AF%AB)的命名规范。相关介绍可以看[这里](https://zh.wikipedia.org/zh-cn/%E9%A7%9D%E5%B3%B0%E5%BC%8F%E5%A4%A7%E5%B0%8F%E5%AF%AB)
+
+### 控制器
+
+控制器类名需要以`驼峰命名法`进行命名，并且以Controller作为后缀结束。
+
+例如：`UserController`、`TotalStatisticsController`、`InfoListController`
+
+### Model
+
+采用驼峰法，名字可以根据你自己的喜好进行命名。我们会推荐你根据数据库表名或相关的业务用途对model进行命名。
+
+例如：`User`、`Product`、`Price`
+
+### 入参配置文件（`Param/*.ini`）
+
+文件名 **必须** 与你的控制器名称保持一致。每个控制器单独对应一个入参配置文件。
+
+例如：`UserController.ini`、`TotalStatisticsController.ini`、`InfoListController.ini`
+
+
 
 ## 安全
 
