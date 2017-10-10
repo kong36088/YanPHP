@@ -18,6 +18,7 @@
         - [相关入参规则](#相关入参规则)
         - [获取输入参数](#获取输入参数)
     - [Database](#database)
+        - [使用介绍](#使用介绍)
         - [DB多连接管理](#db多连接管理)
     - [Session](#session)
     - [定制化](#定制化)
@@ -338,6 +339,7 @@ DB方面YanPHP采用了[illuminate/Database](https://github.com/illuminate/datab
 编码设计风格与其保持总体一致。
 
 
+### 使用介绍
 > `composer require "illuminate/events"` required when you need to use observers with Eloquent.
 
 Once the Capsule instance has been registered. You may use it like so:
