@@ -20,6 +20,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
     /** @var string 主键类型 */
     protected $keyType = 'int';
 
+    protected $connection = 'default';
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

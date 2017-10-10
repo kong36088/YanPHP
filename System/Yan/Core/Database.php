@@ -12,33 +12,37 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-//TODO multi connection
 class Database
 {
     public static function initialize()
     {
         $capsule = new Capsule;
 
-        $driver = Config::get('db_driver')?:'';
-        $host = Config::get('db_host')?:'';
-        $user = Config::get('db_user')?:'';
-        $password = Config::get('db_password')?:'';
-        $database = Config::get('db_database')?:'';
-        $charset = Config::get('db_charset')?:'';
-        $collation = Config::get('db_collation')?:'';
-        $prefix = Config::get('db_prefix')?:'';
+        $dbConfigs = Config::get('db');
+
+        foreach ($dbConfigs as $connectionName => $config) {
+            $driver = $config['db_driver'] ?: '';
+            $host = $config['db_host'] ?: '';
+            $user = $config['db_user'] ?: '';
+            $password = $config['db_password'] ?: '';
+            $database = $config['db_database'] ?: '';
+            $charset = $config['db_charset'] ?: '';
+            $collation = $config['db_collation'] ?: '';
+            $prefix = $config['db_prefix'] ?: '';
 
 
-        $capsule->addConnection([
-            'driver' => $driver,
-            'host' => $host,
-            'database' => $database,
-            'username' => $user,
-            'password' => $password,
-            'charset' => $charset,
-            'collation' => $collation,
-            'prefix' => $prefix,
-        ]);
+            $capsule->addConnection([
+                'driver' => $driver,
+                'host' => $host,
+                'database' => $database,
+                'username' => $user,
+                'password' => $password,
+                'charset' => $charset,
+                'collation' => $collation,
+                'prefix' => $prefix,
+            ], $connectionName);
+        }
+
 
         // Set the event dispatcher used by Eloquent models... (optional)
 

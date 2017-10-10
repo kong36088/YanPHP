@@ -13,30 +13,37 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  *
  */
 
-/** host */
-$config['db_host'] = 'mysql';
+$config['db'] = [
+    'default' => [
+        /** host */
+        'db_host' => 'mysql',
+        /** 数据库用户名 */
+        'db_user' => 'root',
+        /** 数据库密码 */
+        'db_password' => 'root',
+        /** 端口 */
+        'db_port' => 3306,
+        /** 数据库 */
+        'db_database' => 'yan',
+        /** 表名前缀 */
+        'db_prefix' => '',
+        /**
+         * mysql/postgres/sqlite/sqlsrv
+         */
+        'db_driver' => 'mysql',
+        'db_charset' => 'utf8',
+        'db_collation' => 'utf8_unicode_ci'
+    ],
+    'mysql1'=>[
+        'db_host' => '',
+        'db_user' => '',
+        'db_password' => '',
+        'db_port' => 3306,
+        'db_database' => '',
+        'db_prefix' => '',
+        'db_driver' => 'mysql',
+        'db_charset' => '',
+        'db_collation' => ''
+    ]
+];
 
-/** 数据库用户名 */
-$config['db_user'] = 'root';
-
-/** 数据库密码 */
-$config['db_password'] = 'root';
-
-/** 端口 */
-$config['db_port'] = 3306;
-
-/** 数据库 */
-$config['db_database'] = '';
-
-/** 表名前缀 */
-$config['db_prefix'] = '';
-
-/**
- * 数据库驱动，可选的有： mysql、oracle等
- * @see
- */
-$config['db_driver'] = 'mysql';
-
-$config['db_charset'] = 'utf8';
-
-$config['db_collation'] = 'utf8_unicode_ci';

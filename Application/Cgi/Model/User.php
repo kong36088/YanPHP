@@ -38,4 +38,8 @@ class User extends Model
     {
         return $this->where($id)->delete();
     }
+
+    public function switchConnection(string $connectionName){
+        $this->setConnection($connectionName);
+    }
 }
