@@ -18,6 +18,7 @@
         - [相关入参规则](#相关入参规则)
         - [获取输入参数](#获取输入参数)
     - [Database](#database)
+        - [DB多连接管理](#db多连接管理)
     - [Session](#session)
     - [定制化](#定制化)
         - [定制Result格式](#定制result格式)
@@ -221,6 +222,47 @@ $config['log_format'] = "[%datetime%]-%extra.process_id% %channel%.%level_name%:
 |`db_charset`|utf8/(others)||
 |`db_driver`| mysql/postgres/sqlite/sqlsrv |目前支持四种数据库类型|
 
+可以配置多个数据库连接，默认使用`default`进行连接
+
+例如下面的例子：
+```php
+$config['db'] = [
+    'default' => [
+        /** host */
+        'db_host' => 'mysql',
+        /** 数据库用户名 */
+        'db_user' => 'root',
+        /** 数据库密码 */
+        'db_password' => 'root',
+        /** 端口 */
+        'db_port' => 3306,
+        /** 数据库 */
+        'db_database' => 'yan',
+        /** 表名前缀 */
+        'db_prefix' => '',
+        /**
+         * mysql/postgres/sqlite/sqlsrv
+         */
+        'db_driver' => 'mysql',
+        'db_charset' => 'utf8',
+        'db_collation' => 'utf8_unicode_ci'
+    ],
+    'mysql1'=>[
+        'db_host' => '',
+        'db_user' => '',
+        'db_password' => '',
+        'db_port' => 3306,
+        'db_database' => '',
+        'db_prefix' => '',
+        'db_driver' => 'mysql',
+        'db_charset' => '',
+        'db_collation' => ''
+    ]
+];
+```
+这里我们可以对连接进行管理，其中上面的`default`以及`mysql1`是我们的连接名称，我们可以根据名称进行数据库连接的切换。
+具体可以看[Database/DB多连接管理](#db多连接管理)
+
 
 ## YAssert
 
@@ -272,15 +314,15 @@ arr="array"
 |json|否|验证是否为合法json格式||
 |email|否|验证是否为合法邮箱||
 |domain|否|验证是否为合法域名||
-|regex|是|正则匹配|regex(/[0-9]+/)|
-|starts_with|是|是否以规定的字符开头|starts_with(ab)|
-|ends_with|是|是否以规定的字符结束|ends_with(ab)|
-|between|是|数值在定义的范围之间|between(1,100)|
-|min|是|定义最小不小于|min(1)|
-|max|是|定义最大不大于|max(100)|
-|length|是|定义字符串长度在定义范围内|length(1,100)|
-|equal|是|入参的值必须等于定义的值|equal(123)|
-|contain|是|入参是否包含给出的值|contain([ab])|
+|regex|是|正则匹配|`regex(/[0-9]+/)`|
+|starts_with|是|是否以规定的字符开头|`starts_with(ab)`|
+|ends_with|是|是否以规定的字符结束|`ends_with(ab)`|
+|between|是|数值在定义的范围之间|`between(1,100)`|
+|min|是|定义最小不小于|`min(1)`|
+|max|是|定义最大不大于|`max(100)`|
+|length|是|定义字符串长度在定义范围内|`length(1,100)`|
+|equal|是|入参的值必须等于定义的值|`equal(123)`|
+|contain|是|入参是否包含给出的值|`contain([ab])`|
 
 ### 获取输入参数
 
@@ -292,7 +334,8 @@ Input::set('user_id',1); //设置参数
 
 ## Database
 
-The Illuminate Database component is a full database toolkit for PHP, providing an expressive query builder, ActiveRecord style ORM, and schema builder. It currently supports MySQL, Postgres, SQL Server, and SQLite. It also serves as the database layer of the Laravel PHP framework.
+DB方面YanPHP采用了[illuminate/Database](https://github.com/illuminate/database)。
+编码设计风格与其保持总体一致。
 
 
 > `composer require "illuminate/events"` required when you need to use observers with Eloquent.
@@ -368,6 +411,39 @@ $UserModel->getById(1); // 获取user表中uid为1的用户数据信息
 ```
 
 For further documentation on using the various database facilities this library provides, consult the [Laravel database documentation](https://docs.golaravel.com/docs/5.4/database/).
+
+### DB多连接管理
+
+在配置文件`database.php`配置我们的连接后，可以实现多个db连接实例。
+
+下面我们将介绍如何进行连接的切换。
+
+`Model/User.php`
+```php
+<?php
+namespace App\Cgi\Model;
+
+use Illuminate\Support\Collection;
+use Yan\Core\Model;
+
+class User extends Model
+{
+    protected $table = 'user';
+    protected $connection = 'mysql1';  //这里可以配置User Model默认使用"mysql1"连接
+
+    public function getById($id): Collection
+    {
+        //这里可以使当前实例的连接切换为"default"
+        $this->setConnection('default');
+        
+        return $this->where([$this->primaryKey => $id])->get();
+    }
+}
+```
+
+我们可以使用Model当中的`$connection`配置默认的连接。
+
+另外一种方法是使用自带的`$this->setConnection($name)`方法进行连接的设置
 
 ## Session
 
