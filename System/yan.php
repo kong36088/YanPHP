@@ -6,6 +6,8 @@
  */
 defined('YAN_VERSION') or define('YAN_VERSION', '0.2');
 
+//TODO 框架类库分离
+
 $dirname = dirname(__FILE__);
 require_once $dirname."/../vendor/autoload.php";
 

@@ -7,10 +7,6 @@
 namespace Yan\Core;
 
 
-use Yan\Core\Exception\FileNotExistException;
-use Yan\Core\Exception\InvalidArgumentException;
-use Yan\Core\Exception\RuntimeException;
-
 class Input
 {
     protected static $data = array();
