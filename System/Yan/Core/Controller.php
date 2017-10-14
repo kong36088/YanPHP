@@ -10,7 +10,6 @@ namespace Yan\Core;
 class Controller
 {
 
-    private static $_instance;
     /**
      * @var array
      */
