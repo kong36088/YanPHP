@@ -4,6 +4,9 @@
 # Guide
 
 - [Documentation](#documentation)
+    - [安装](#安装)
+        - [环境要求](#环境要求)
+        - [安装步骤](#安装步骤)
     - [hello world](#hello-world)
     - [路由](#路由)
         - [默认路由规则](#默认路由规则)
@@ -75,6 +78,32 @@
 │           └── Exception
 
 ```
+
+## 安装
+
+### 环境要求
+
+Require:
+`PHP >= 7.0`
+
+`Composer`
+
+Composer安装：https://getcomposer.org/download/
+
+### 安装步骤
+
+先把`YanPHP`从github拷贝到本地
+
+```bash
+git clone https://github.com/kong36088/YanPHP.git
+```
+
+然后进行框架依赖组件的安装，这里需要用到`composer`。请确保您的机器中已经安装了`composer`
+```bash
+composer install
+```
+
+完成！
 
 ## hello world
 
